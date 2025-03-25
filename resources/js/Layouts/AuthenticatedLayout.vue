@@ -8,6 +8,11 @@ import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import { Link } from '@inertiajs/vue3';
 
 const showingNavigationDropdown = ref(false);
+// const item1 = [
+//     { title: 'Users' },
+//     { title: 'Customers' },
+//     { title: 'Materials' },
+// ]
 </script>
 
 <template>
@@ -21,16 +26,37 @@ const showingNavigationDropdown = ref(false);
                     <div class="flex h-16 justify-between">
                         <div class="flex">
                             <!-- Logo -->
-                            <div class="flex shrink-0 items-center">
+                            <!-- <div class="flex shrink-0 items-center">
                                 <Link :href="route('dashboard')">
                                     <ApplicationLogo
                                         class="block h-9 w-auto fill-current text-gray-800"
                                     />
                                 </Link>
-                            </div>
-
+                            </div> -->
+    <!-- <v-toolbar>
+        <v-btn>Home</v-btn>
+        <v-btn>Report</v-btn>
+        <v-btn>Setting</v-btn>
+        <div class="text-center">
+        <v-menu
+        open-on-hover>
+        <template v-slot:activator="{ props }">
+        <v-btn v-bind="props">Administration</v-btn>
+            </template>
+            <v-list>
+            <v-list-item
+            v-for="(item, index) in item1"
+            :key="index"
+            :value="index"
+            >
+            <v-list-item-title>{{ item.title }}</v-list-item-title>
+            </v-list-item>
+                </v-list>
+                </v-menu>
+                </div>
+    </v-toolbar> -->
                             <!-- Navigation Links -->
-                            <div
+                            <!-- <div
                                 class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex"
                             >
                                 <NavLink
@@ -41,8 +67,9 @@ const showingNavigationDropdown = ref(false);
                                 </NavLink>
                             </div>
                         </div>
+                        
 
-                        <div class="hidden sm:ms-6 sm:flex sm:items-center">
+                        <div class="hidden sm:ms-6 sm:flex sm:items-center"> -->
                             <!-- Settings Dropdown -->
                             <div class="relative ms-3">
                                 <Dropdown align="right" width="48">
