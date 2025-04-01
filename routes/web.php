@@ -25,6 +25,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::resource('devices','DeviceController');
+    Route::resource('mastercustomers','MasterCustomerController');
+    Route::resource('mastermaterials','MasterMaterialController');
+    Route::resource('transactions','TransactionController');
+    Route::resource('usersroles','UsersRoleController');
 });
 
-require __DIR__.'/auth.php';
