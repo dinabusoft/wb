@@ -1,6 +1,11 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Api\DeviceController;
+use App\Http\Controllers\Api\MasterCustomerController;
+use App\Http\Controllers\Api\MasterMaterialController;
+use App\Http\Controllers\Api\TransactionController;
+use App\Http\Controllers\Api\UsersRoleController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -26,10 +31,10 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::resource('devices','DeviceController');
-    Route::resource('mastercustomers','MasterCustomerController');
-    Route::resource('mastermaterials','MasterMaterialController');
-    Route::resource('transactions','TransactionController');
-    Route::resource('usersroles','UsersRoleController');
+    Route::resource('devices',DeviceController::class);
+    Route::resource('mastercustomers',MasterCustomerController::class);
+    Route::resource('mastermaterials',MasterMaterialController::class);
+    Route::resource('transactions',TransactionController::class);
+    Route::resource('usersroles',UsersRoleController::class);
 });
 
