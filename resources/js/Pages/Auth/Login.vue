@@ -25,6 +25,8 @@ const form = useForm({
 const submit = () => {
     form.post(route('login'), {
         onFinish: () => form.reset('password'),
+          
+
     });
 };
 </script>
@@ -32,10 +34,10 @@ const submit = () => {
 <template>
     <GuestLayout>
         <Head title="Log in" />
-        <div><p>Don't have an account? <b><a href="register" class="link-info rounded-md text-purple-700"  color="purple" >Register here</a></b></p></div>
-            <div class="col-lg-6 d-flex align-items-center gradient-custom-2"></div>
+       <!-- <div><p>Don't have an account? <b><a href="register" class="link-info rounded-md text-purple-700"  color="purple" >Register here</a></b></p></div>
+            <div class="col-lg-6 d-flex align-items-center gradient-custom-2"></div> 
             <br>
-            <br>
+            <br> -->
         <div v-if="status" class="mb-4 text-sm font-medium text-green-600">
             {{ status }}
         </div>

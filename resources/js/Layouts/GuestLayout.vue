@@ -12,7 +12,7 @@ import { Link } from '@inertiajs/vue3';
         </div> -->
     <div class="bg-image"
         style="
-        background-image: url('https://storage.googleapis.com/limecube-live-c29b24b1/root/Blog/business-partners-illustration.jpg');
+        background-image: url('https://img.freepik.com/free-vector/code-snippets-concept-illustration_114360-4681.jpg?t=st=1743651966~exp=1743655566~hmac=e8e021f2505341d7bb9862ea4721f80ac04957ab07ef614b2bf3530f08fa0523&w=826');
         height: 100vh;
         position: relative;
         top: 0px;
@@ -29,8 +29,9 @@ import { Link } from '@inertiajs/vue3';
                 class="mt-0 w-full overflow-hidden bg-white px-6 py-4 shadow-md sm:max-w-md sm:rounded-lg"
             >
             <div class="col-lg-6 d-flex align-items-center gradient-custom-2">
-            <img src="https://www.dubaiweighing.com/wp-content/uploads/2022/03/truck-scale.jpg"
+            <img src="https://img.freepik.com/free-vector/code-typing-concept-illustration_114360-4296.jpg?t=st=1743652045~exp=1743655645~hmac=507bab7624f10d770d5abfe8cdf3ce84edc8055749397749061d4dd8b276c252&w=826"
             alt="Login image" class="w-100 vh-100" style="object-fit: cover; object-position: left;">
+            
             </div>
             <div class="rounded-md text-sm">
                 <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px; font-size: 2.5rem;font-weight: bold;">Welcome back</h5> 
