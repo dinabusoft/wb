@@ -1,6 +1,14 @@
 <?php
 
-use Inertia\Inertia;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Api\DeviceController;
+use App\Http\Controllers\Api\MasterCustomerController;
+use App\Http\Controllers\Api\MasterMaterialController;
+use App\Http\Controllers\Api\TransactionController;
+use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\UsersRoleController;
+use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
@@ -8,7 +16,7 @@ use App\Http\Controllers\ProfileController;
 use App\Mail\TestMail;
 use Illuminate\Container\Attributes\Auth;
 
-
+Route::get('/', function () {
 
 Route::middleware('guest')->group(function () {
     Route::get('/', function () {
@@ -28,6 +36,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::resource('devices',DeviceController::class);
+    Route::resource('mastercustomers',MasterCustomerController::class);
+    Route::resource('mastermaterials',MasterMaterialController::class);
+    Route::resource('transactions',TransactionController::class);
+    Route::resource('users',UserController::class);
+    //Route::resource('usersroles',UsersRoleController::class);
+});
     Route::get('/home', function () {
     return Inertia::render('Home');
 })->middleware(['auth', 'verified'])->name('home');
