@@ -11,9 +11,8 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\TestMail;
+use Inertia\Inertia;
 use Illuminate\Container\Attributes\Auth;
-
-Route::get('/', function () {
 
 Route::middleware('guest')->group(function () {
     Route::get('/', function () {
@@ -63,9 +62,6 @@ Route::middleware('auth')->group(function () {
     return Inertia::render('Administrasi/Material');
 })->name('admin-material');
 
-
-
-});
 
 // Route::get('/forgot-password', function () {
 //     return view('auth.forgot-password');
