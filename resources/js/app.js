@@ -7,6 +7,7 @@ import { createApp, h } from 'vue';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy';
 import axios from './Plugins/axios'
 import vuetify from './Plugins/vuetify'
+import 'material-design-icons-iconfont/dist/material-design-icons.css'
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
