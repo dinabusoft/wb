@@ -5,7 +5,10 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Api\ApiController;
 use App\Models\User;
-use App\Transformers\UserTransformer;
+use App\Models\UsersRole;
+use App\Http\Resources\UserResource;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules;
 
 
 /**
@@ -17,47 +20,136 @@ use App\Transformers\UserTransformer;
 class UserController extends ApiController
 {
     
-    public function index(Request $request)
-    {
-       return $this->response->paginator(User::paginate(10), new UserTransformer());
-    }
+   //list tabel
+   public function index(Request $request)
+   {
+       if ($request->wantsJson()) {
+           $query = User::query()->when($request->get('search'), function ($query, $search) {
+               $search = strtolower(trim($search));
+               return $query->whereRaw('LOWER(code) LIKE ? or LOWER(name) LIKE ? or LOWER(pack) LIKE ? or LOWER(content) LIKE ? or LOWER(remark) LIKE ?', ["%$search%","%$search%","%$search%","%$search%","%$search%"]);
+           })->when($request->get('sort'), function ($query, $sortBy) {
+               return $query->orderBy($sortBy['key'], $sortBy['order']);
+           });
 
-    public function show(Request $request, User $user)
-    {
-      return $this->response->item($user, new UserTransformer());
-    }
+           $data = $query->paginate($request->get('limit', 10));
 
-    public function store(Request $request)
-    {
-        $model=new User;
-        $model->fill($request->all());
-        if ($model->save()) {
-            return $this->response->item($model, new UserTransformer());
-        } else {
-              return $this->response->errorInternal('Error occurred while saving User');
-        }
-    }
- 
-    public function update(Request $request,  User $user)
-    {
-        $user->fill($request->all());
+           return UserResource::collection($data)->response()->getData(true);
+       }
 
-        if ($user->save()) {
-            return $this->response->item($user, new UserTransformer());
-        } else {
-             return $this->response->errorInternal('Error occurred while saving User');
-        }
-    }
+       return inertia('User/Index');
+   }
 
-    public function destroy(Request $request, $user)
-    {
-        $user = User::findOrFail($user);
+   //form create
+   public function create()
+   {
+       return inertia('User/Create');
+   }
 
-        if ($user->delete()) {
-            return $this->response->array(['status' => 200, 'message' => 'User successfully deleted']);
-        } else {
-             return $this->response->errorInternal('Error occurred while deleting User');
-        }
-    }
+
+   //save new data
+   public function store(Request $request)
+   {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'roles' => 'required|array'
+        ]);
+
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
+
+       if ($user->id) {
+            $roles = UsersRole::create([
+                'roles' => $request->roles,
+                'user_id' => $user->id,
+            ]);
+           $message = sprintf('Successfully created %s', $user->name);
+           return inertia('User/Index', [
+               'message' => ['show' => true, 
+                            'message' => $message,
+                            'color' => 'info'
+               ]
+           ]);
+       } else {
+           $message = 'Error server internal occurred while saving User. Please try again later';
+           return inertia('User/Index', [
+               'message' => ['show' => true, 
+                            'message' => $message,
+                            'color' => 'error'
+               ]
+           ]);
+       }
+   }
+
+   //form edit
+   public function edit(User $user)
+   {
+       return inertia('User/Edit', [
+           'data' => $user
+       ]);
+   }
+
+   //save update data
+   public function update(Request $request,  User $user)
+   {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|lowercase|email|max:255',
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'roles' => 'required|array'
+        ]);
+
+        $request->password = Hash::make($request->password);
+
+       $user->fill($data);
+    
+       if ($user->save()) {
+            $user->roles->update([
+                'roles' => $request->roles,
+            ]);
+           $message = sprintf('Successfully updated %s', $user->name);
+           return inertia('User/Index', [
+               'message' => ['show' => true, 
+                            'message' => $message,
+                            'color' => 'info'
+               ]
+           ]);
+       } else {
+            $message = 'Error server internal occurred while saving User. Please try again later';
+            return inertia('User/Index', [
+               'message' => ['show' => true, 
+                            'message' => $message,
+                            'color' => 'error'
+               ]
+           ]);
+       }
+   }
+
+   //delete data
+   public function destroy(Request $request, $user)
+   {
+       $user = User::findOrFail($user);
+       if ($user->delete()) {
+           $message = sprintf('Successfully deleted %s', $user->name);
+           return response()->json([
+               'message' => ['show' => true, 
+                            'message' => $message,
+                            'color' => 'info'
+               ]
+           ]);
+       } else {
+             $message = 'Error server internal occurred while deleting User. Please try again later';
+             return response()->json([
+               'message' => ['show' => true, 
+                            'message' => $message,
+                            'color' => 'error'
+               ]
+           ]);
+       }
+   }
 
 }

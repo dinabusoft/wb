@@ -25,11 +25,11 @@ class DeviceRequest extends FormRequest
     public function rules() 
     {
         return [
-			'name' => 'nullable|max:50',
-			'port' => 'nullable|numeric',
-			'baudrate' => 'nullable|max:50',
-			'databits' => 'nullable|max:50',
-			'stopbits' => 'nullable|max:50',
+			'name' => 'required|max:50',
+			'port' => 'required|numeric',
+			'baudrate' => 'required|max:50',
+			'databits' => 'required|max:50',
+			'stopbits' => 'required|max:50',
 			'parity' => 'nullable|max:50',
 			'inputlen' => 'nullable|numeric',
 			'threshold' => 'nullable|max:50',
@@ -38,9 +38,6 @@ class DeviceRequest extends FormRequest
 			'status' => 'nullable',
 			'remark' => 'nullable|string',
 			'log' => 'nullable|string',
-			'created_by' => 'nullable|numeric',
-			'updated_by' => 'nullable|numeric',
-			'deleted_by' => 'nullable|numeric',
         ];
     }
 

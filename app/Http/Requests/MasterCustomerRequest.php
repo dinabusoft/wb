@@ -25,19 +25,17 @@ class MasterCustomerRequest extends FormRequest
     public function rules() 
     {
         return [
-			'name' => 'nullable|max:255',
-			'street' => 'nullable|max:255',
-			'district' => 'nullable|max:255',
-			'regency' => 'nullable|max:255',
-			'province' => 'nullable|max:255',
+			'name' => 'required|max:255',
+			'street' => 'required|max:255',
+			'district' => 'required|max:255',
+			'regency' => 'required|max:255',
+			'province' => 'required|max:255',
 			'postalcode' => 'nullable|max:255',
-			'telephone' => 'nullable|max:20',
+			'telephone' => 'required|max:20',
 			'phone' => 'nullable|max:20',
-			'status' => 'nullable',
+			'status' => 'required',
 			'remark' => 'nullable|string',
-			'created_by' => 'nullable|numeric',
-			'updated_by' => 'nullable|numeric',
-			'deleted_by' => 'nullable|numeric',
+		
         ];
     }
 

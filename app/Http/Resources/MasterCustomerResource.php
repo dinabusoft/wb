@@ -26,12 +26,12 @@ class MasterCustomerResource extends JsonResource
 			"phone" => $this->phone,
 			"status" => $this->status,
 			"remark" => $this->remark,
-			"created_at" => $this->created_at,
-			"updated_at" => $this->updated_at,
-			"deleted_at" => $this->deleted_at,
-			"created_by" => $this->created_by,
-			"updated_by" => $this->updated_by,
-			"deleted_by" => $this->deleted_by,
+			"created_at" => $this->created_at?->format('Y-m-d H:i:s'),
+			"updated_at" => $this->updated_at?->format('Y-m-d H:i:s'),
+			"deleted_at" => $this->deleted_at?->format('Y-m-d H:i:s'),
+			"created_by_name" => $this->created_actor?->name,
+			"updated_by_name" => $this->updated_actor?->name,
+			"deleted_by_name" => $this->deleted_actor?->name,
 
         ];
     }
