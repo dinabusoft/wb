@@ -10,9 +10,6 @@ use App\Http\Controllers\Api\UsersRoleController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Foundation\Application;
-use App\Http\Controllers\ProfileController;
 use App\Mail\TestMail;
 use Illuminate\Container\Attributes\Auth;
 
