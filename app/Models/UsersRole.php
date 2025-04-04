@@ -17,9 +17,9 @@ class UsersRole extends Model
     /**
     * Mass assignable columns
     */
-    protected $fillable=['userd_id',
+    protected $fillable=[
 'roles',
-'userd_id'];
+'user_id'];
 
     /**
     * Date time columns.

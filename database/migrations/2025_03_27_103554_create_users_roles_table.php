@@ -16,7 +16,7 @@ class createUsersRolesTable extends Migration
         Schema::create('users_roles', function (Blueprint $table) {
             $table->increments("id");
 			$table->string("roles",255)->nullable();
-            $table->foreignId('userd_id')->nullable()->index();
+            $table->foreignId('user_id')->nullable()->index();
         });
     }
 

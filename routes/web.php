@@ -5,11 +5,13 @@ use App\Http\Controllers\Api\DeviceController;
 use App\Http\Controllers\Api\MasterCustomerController;
 use App\Http\Controllers\Api\MasterMaterialController;
 use App\Http\Controllers\Api\TransactionController;
+use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\UsersRoleController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
+require __DIR__."/auth.php";
 Route::get('/', function () {
     /*
     return Inertia::render('Welcome', [
@@ -35,6 +37,6 @@ Route::middleware('auth')->group(function () {
     Route::resource('mastercustomers',MasterCustomerController::class);
     Route::resource('mastermaterials',MasterMaterialController::class);
     Route::resource('transactions',TransactionController::class);
-    Route::resource('usersroles',UsersRoleController::class);
+    Route::resource('users',UserController::class);
+    //Route::resource('usersroles',UsersRoleController::class);
 });
-

@@ -25,15 +25,12 @@ class MasterMaterialRequest extends FormRequest
     public function rules() 
     {
         return [
-			'code' => 'nullable|max:50',
-			'name' => 'nullable|max:255',
+			'code' => 'required|max:50',
+			'name' => 'required|max:255',
 			'pack' => 'nullable|max:50',
-			'content' => 'nullable|max:50',
+			'content' => 'required|max:50',
 			'remark' => 'nullable|string',
-			'status' => 'nullable',
-			'created_by' => 'nullable|numeric',
-			'updated_by' => 'nullable|numeric',
-			'deleted_by' => 'nullable|numeric',
+			'status' => 'required',
         ];
     }
 

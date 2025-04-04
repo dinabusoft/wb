@@ -58,5 +58,29 @@ class MasterMaterial extends Model
     }
 
 
+    /**
+     * @return BelongsTo
+     */
+    public function created_actor()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
+
+    /**
+     * @return BelongsTo
+     */
+    public function updated_actor()
+    {
+        return $this->belongsTo(User::class, 'updated_by');
+    }
+
+    /**
+     * @return BelongsTo
+     */
+    public function deleted_actor()
+    {
+        return $this->belongsTo(User::class, 'deleted_by');
+    }
 
 }
