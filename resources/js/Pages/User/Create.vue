@@ -1,13 +1,15 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 import { Head, Link, useForm, router } from '@inertiajs/vue3'
+import Navbar from '@/Components/Navbar.vue';
+
 
 const form = useForm({
     name: null,
     email: null,
     password: null,
     password_confirmation: null,
-    roles: null,
+    role: null,
 })
 
 const submit = () => {
@@ -21,12 +23,16 @@ const submit = () => {
 
 <template>
 
-    <Head title="Create User" />
-    <AuthenticatedLayout>
-        <div class="mb-5">
-            <h5 class="text-h5 font-weight-bold">Create User</h5>
+    <Head title="User Administration" />
+  <v-app>
+    <Navbar />
+    <v-main>
+      <v-container class="py-6">
+          <v-card-title class="bg-grey-lighten-3 px-4 py-3">
+            <v-icon icon="mdi-account-cog" class="mr-2" color="#303F9F"></v-icon>
+            <span style="color: #303F9F;">USER MANAGEMENT</span>
+          </v-card-title>
             <v-breadcrumbs :items="breadcrumbs"></v-breadcrumbs>
-        </div>
         <v-card>
             <v-form @submit.prevent="submit">
                 <v-card-text>
@@ -48,8 +54,7 @@ const submit = () => {
                                 variant="underlined" :error-messages="form.errors.password_confirmation" />
                         </v-col>
                         <v-col cols="12" sm="12" md="6">
-                            <v-select v-model="form.roles" :items="roles" label="Roles" chips
-                                multiple></v-select>
+                            <v-select v-model="form.role" :items="role" label="Role" :error-messages="form.errors.role" chips></v-select>
                         </v-col>
                     </v-row>
                 </v-card-text>
@@ -63,8 +68,9 @@ const submit = () => {
             </v-form>
         </v-card>
 
-    </AuthenticatedLayout>
-
+    </v-container>
+    </v-main>
+  </v-app>
 
 
 </template>
@@ -74,16 +80,12 @@ export default {
     name: 'User Create',
     data() {
         return {
-            roles: ['administrator', 'manager', 'operator'],
-            statuses: [
-                { text: 'Active', value: '1' },
-                { text: 'Inactive', value: '0' },
-            ],
+            role: ['administrator', 'manager', 'operator'],
             breadcrumbs: [
                 {
-                    title: 'Dashboard',
+                    title: 'home',
                     disabled: false,
-                    href: '/dashboard',
+                    href: '/home',
                 },
                 {
                     title: 'User',
