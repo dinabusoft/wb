@@ -24,7 +24,7 @@ class DeviceController extends ApiController
          if ($request->wantsJson()) {
              $query = Device::query()->when($request->get('search'), function ($query, $search) {
                  $search = strtolower(trim($search));
-                 return $query->whereRaw('LOWER(code) LIKE ? or LOWER(name) LIKE ? or LOWER(pack) LIKE ? or LOWER(content) LIKE ? or LOWER(remark) LIKE ?', ["%$search%","%$search%","%$search%","%$search%","%$search%"]);
+                 return $query->whereRaw('(LOWER(code) LIKE ? or LOWER(name) LIKE ? or LOWER(pack) LIKE ? or LOWER(content) LIKE ? or LOWER(remark) LIKE ?)', ["%$search%","%$search%","%$search%","%$search%","%$search%"]);
              })->when($request->get('sort'), function ($query, $sortBy) {
                  return $query->orderBy($sortBy['key'], $sortBy['order']);
              });

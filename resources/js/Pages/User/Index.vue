@@ -1,14 +1,21 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 import { Head, Link, router } from '@inertiajs/vue3'
+import { ref } from 'vue';
+import Navbar from '@/Components/Navbar.vue';
 </script>
 
 <template>
 
-  <Head title="User" />
-  <AuthenticatedLayout>
-    <div class="mb-5">
-      <h5 class="text-h5 font-weight-bold">User</h5>
+<Head title="User Administration" />
+  <v-app>
+    <Navbar />
+    <v-main>
+      <v-container class="py-6">
+          <v-card-title class="bg-grey-lighten-3 px-4 py-3">
+            <v-icon icon="mdi-account-cog" class="mr-2" color="#303F9F"></v-icon>
+            <span style="color: #303F9F;">USER MANAGEMENT</span>
+          </v-card-title>
       <v-breadcrumbs :items="breadcrumbs"></v-breadcrumbs>
       <v-snackbar v-model="notif.show " :color="notif.color" location="center">
         {{ notif.message }}
@@ -16,29 +23,33 @@ import { Head, Link, router } from '@inertiajs/vue3'
       </v-snackbar>
       {{ $page.props?.flash?.success }}
       {{ $page.props?.flash?.error }}
-    </div>
     <v-card class="pa-4">
       <div class="d-flex flex-wrap align-center">
         <v-text-field v-model="search" label="Search" variant="underlined" prepend-inner-icon="mdi-magnify" hide-details
           clearable single-line />
         <v-spacer />
-        <Link href="/users/create" as="div">
-        <v-btn color="primary">Create</v-btn>
-        </Link>
+   
+
+        <v-btn color="#303F9F" variant="flat" href="/users/create" class="text-none">
+                  <v-icon left>mdi-account-multiple-plus</v-icon> <v-spacer class="ms-2"></v-spacer>
+                  Add User
+                </v-btn>
+        
       </div>
       <v-data-table-server v-model:options="options" :items="items" :items-length="totalItems" :headers="headers"
         :search="search" class="elevation-0" :loading="isLoadingTable" @update:options="loadItems">
         <template #[`item.status`]="{ item }">{{ item.status == '1' ? 'Active' : 'Inactive' }}</template>
         <template #[`item.action`]="{ item }">
-          <v-btn :href="`/users/${item.id}/edit`" variant="text">
+          
+          <v-btn :href="`/users/${item.id}/edit`" variant="text" color="#303F9F">
             <template v-slot:prepend>
-              <v-icon color="warning" icon="mdi-pencil" size="small" />
-            </template>
-            Edit
+             </template>
+            <v-icon>mdi-account-edit</v-icon> 
+            EDIT
           </v-btn>
-          <v-btn @click="deleteItem(item)" variant="text">
+          <v-btn @click="deleteItem(item)" variant="text" color="#303F9F">
             <template v-slot:prepend>
-              <v-icon class="ml-2" color="error" icon="mdi-delete" size="small" />
+              <v-icon>mdi-account-remove</v-icon>
             </template>
             Delete
           </v-btn>
@@ -57,7 +68,9 @@ import { Head, Link, router } from '@inertiajs/vue3'
         </v-card>
       </v-dialog>
     </v-row>
-  </AuthenticatedLayout>
+  </v-container>
+    </v-main>
+  </v-app>
 </template>
 
 <script>
@@ -74,9 +87,8 @@ export default {
       headers: [
         { title: 'Name', key: 'name' },
         { title: 'Email', key: 'email' },
-        { title: 'Roles', key: 'roles' },
+        { title: 'Role', key: 'role' },
         { title: 'Date Created', key: 'created_at' },
-        { title: 'Created by', key: 'created_by_name' },
         { title: 'Last Updated', key: 'updated_at' },
         { title: 'Action', key: 'action', sortable: false },
         
@@ -89,9 +101,9 @@ export default {
       totalItems: 0,
       breadcrumbs: [
         {
-          title: 'Dashboard',
+          title: 'home',
           disabled: false,
-          href: '/dashboard',
+          href: '/home',
         },
         {
           title: 'User',

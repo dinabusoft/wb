@@ -26,7 +26,7 @@ class UserController extends ApiController
        if ($request->wantsJson()) {
            $query = User::query()->when($request->get('search'), function ($query, $search) {
                $search = strtolower(trim($search));
-               return $query->whereRaw('LOWER(code) LIKE ? or LOWER(name) LIKE ? or LOWER(pack) LIKE ? or LOWER(content) LIKE ? or LOWER(remark) LIKE ?', ["%$search%","%$search%","%$search%","%$search%","%$search%"]);
+               return $query->whereRaw('(LOWER(code) LIKE ? or LOWER(name) LIKE ? or LOWER(pack) LIKE ? or LOWER(content) LIKE ? or LOWER(remark) LIKE ?)', ["%$search%","%$search%","%$search%","%$search%","%$search%"]);
            })->when($request->get('sort'), function ($query, $sortBy) {
                return $query->orderBy($sortBy['key'], $sortBy['order']);
            });
@@ -53,7 +53,7 @@ class UserController extends ApiController
             'name' => 'required|string|max:255',
             'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'roles' => 'required|array'
+            'role' => 'required|string'
         ]);
 
         $user = User::create([
@@ -63,8 +63,8 @@ class UserController extends ApiController
         ]);
 
        if ($user->id) {
-            $roles = UsersRole::create([
-                'roles' => $request->roles,
+            $role = UsersRole::create([
+                'roles' => $request->role,
                 'user_id' => $user->id,
             ]);
            $message = sprintf('Successfully created %s', $user->name);
@@ -85,11 +85,21 @@ class UserController extends ApiController
        }
    }
 
+    //form clone
+    public function show(User $user)
+    {
+        $user['role'] = $user->roles?->roles;
+        return inertia('User/Edit', [
+            'data' => $user,
+        ]);
+    }
+
    //form edit
    public function edit(User $user)
    {
+       $user['role'] = $user->roles?->roles;
        return inertia('User/Edit', [
-           'data' => $user
+           'data' => $user,
        ]);
    }
 
@@ -100,16 +110,24 @@ class UserController extends ApiController
             'name' => 'required|string|max:255',
             'email' => 'required|string|lowercase|email|max:255',
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'roles' => 'required|array'
+            'role' => 'required|string'
         ]);
 
         $request->password = Hash::make($request->password);
 
-       $user->fill($data);
+       $user->fill([
+        'name' => $request->name,
+        'email' => $request->email,
+        'password' => Hash::make($request->password),
+       ]);
     
        if ($user->save()) {
-            $user->roles->update([
-                'roles' => $request->roles,
+            $role = UsersRole::updateOrCreate(
+            [
+                'user_id' => $user->id,
+            ],
+            [
+                'roles' => $request->role,
             ]);
            $message = sprintf('Successfully updated %s', $user->name);
            return inertia('User/Index', [
