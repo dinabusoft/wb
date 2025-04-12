@@ -1,5 +1,20 @@
 <?php
 
+<<<<<<< Updated upstream
+=======
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Api\DeviceController;
+use App\Http\Controllers\Api\MasterCustomerController;
+use App\Http\Controllers\Api\MasterMaterialController;
+use App\Http\Controllers\Api\TransactionController;
+use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\StatusController;
+use App\Http\Controllers\Api\UsersRoleController;
+use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\TestMail;
+>>>>>>> Stashed changes
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
@@ -28,6 +43,23 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+<<<<<<< Updated upstream
+=======
+
+    Route::resource('devices',DeviceController::class);
+    Route::resource('mastercustomers',MasterCustomerController::class);
+    Route::resource('mastermaterials',MasterMaterialController::class);
+    Route::resource('transactions',TransactionController::class);
+    Route::resource('users',UserController::class);
+    Route::resource('status',StatusController::class);
+
+    Route::get('/master_materials/options', [MasterMaterialController::class, 'getOptions']);
+    Route::get('/master_customers/options', [MasterCustomerController::class, 'getOptions']);
+    Route::get('transactions/{transaction}/out',[TransactionController::class, 'showOut']);
+    Route::put('/transactions/{transaction}/out', [TransactionController::class, 'saveOut'])->name('transactions.out');
+    //Route::resource('usersroles',UsersRoleController::class);
+});
+>>>>>>> Stashed changes
     Route::get('/home', function () {
     return Inertia::render('Home');
 })->middleware(['auth', 'verified'])->name('home');
@@ -44,10 +76,10 @@ Route::middleware('auth')->group(function () {
     return Inertia::render('Administrasi/User');
 })->name('admin-user');
      Route::get('/admin-customer', function () {
-    return Inertia::render('Administrasi/Customer');
+    return Inertia::render('MasterCustomer/Index');
 })->name('admin-customer');
      Route::get('/admin-material', function () {
-    return Inertia::render('Administrasi/Material');
+    return Inertia::render('MasterMaterial/Index');
 })->name('admin-material');
 
 
