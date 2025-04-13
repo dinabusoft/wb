@@ -39,6 +39,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('transactions',TransactionController::class);
     Route::resource('users',UserController::class);
     //Route::resource('usersroles',UsersRoleController::class);
+    Route::get('/transactions-export',[TransactionController::class, 'export']);
 });
     Route::get('/home', function () {
     return Inertia::render('Home');

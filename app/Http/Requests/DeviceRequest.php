@@ -38,6 +38,7 @@ class DeviceRequest extends FormRequest
 			'status' => 'nullable',
 			'remark' => 'nullable|string',
 			'log' => 'nullable|string',
+            'user_id' => 'nullable',
         ];
     }
 

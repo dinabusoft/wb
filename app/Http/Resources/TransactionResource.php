@@ -16,6 +16,7 @@ class TransactionResource extends JsonResource
     {
         return [
 			"id" => $this->id,
+			"ticket_id" => sprintf( 'WB%08d', $this->id ),
 			"date_in" => $this->date_in,
 			"date_out" => $this->date_out,
 			"time_in" => $this->time_in,
@@ -28,6 +29,8 @@ class TransactionResource extends JsonResource
 			"driver_phone" => $this->driver_phone,
 			"materials_id" => $this->materials_id,
 			"customers_id" => $this->customers_id,
+			"materials_name" => ($this->material?$this->material->name:''),
+			"customers_name" => ($this->customer?$this->customer->name:''),
 			"remark" => $this->remark,
 			"created_at" => $this->created_at?->format('Y-m-d H:i:s'),
 			"updated_at" => $this->updated_at?->format('Y-m-d H:i:s'),
@@ -35,7 +38,7 @@ class TransactionResource extends JsonResource
 			"created_by_name" => $this->created_actor?->name,
 			"updated_by_name" => $this->updated_actor?->name,
 			"deleted_by_name" => $this->deleted_actor?->name,
-
+			"status"=> ($this->date_out!=null && !empty($this->date_out)?"Check out":"Check in")
         ];
     }
 }

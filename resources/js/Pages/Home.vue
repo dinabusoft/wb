@@ -103,7 +103,7 @@ function printData() {
                                     <v-col cols="8">
                                         <v-text-field
                                             v-model="Status"
-                                            density="compact"
+                                            density="comfortable"
                                             hide-details
                                             disabled
                                         ></v-text-field>
@@ -115,7 +115,7 @@ function printData() {
                                     <v-col cols="8">
                                         <v-text-field
                                             v-model="Ticket"
-                                            density="compact"
+                                            density="comfortable"
                                             hide-details
                                             disabled
                                         ></v-text-field>
@@ -127,7 +127,7 @@ function printData() {
                                     <v-col cols="8">
                                         <v-text-field
                                             v-model="Date"
-                                            density="compact"
+                                            density="comfortable"
                                             hide-details
                                             disabled
                                         ></v-text-field>
@@ -139,7 +139,7 @@ function printData() {
                                     <v-col cols="8">
                                         <v-text-field
                                             v-model="Time"
-                                            density="compact"
+                                            density="comfortable"
                                             hide-details
                                             disabled
                                         ></v-text-field>
@@ -151,7 +151,7 @@ function printData() {
                                     <v-col cols="8">
                                         <v-text-field
                                             v-model="Weight"
-                                            density="compact"
+                                            density="comfortable"
                                             hide-details
                                             disabled
                                         ></v-text-field>
@@ -164,7 +164,7 @@ function printData() {
                                     <v-col cols="8">
                                         <v-text-field
                                             v-model="Driver"
-                                            density="compact"
+                                            density="comfortable"
                                             hide-details
                                         ></v-text-field>
                                     </v-col>
@@ -175,7 +175,7 @@ function printData() {
                                     <v-col cols="8">
                                         <v-text-field
                                             v-model="PoliceNo"
-                                            density="compact"
+                                            density="comfortable"
                                             hide-details
                                         ></v-text-field>
                                     </v-col>
@@ -187,7 +187,7 @@ function printData() {
                                         <v-select
                                             v-model="Material"
                                             :items="materialItems"
-                                            density="compact"
+                                            density="comfortable"
                                             hide-details
                                         >
                                             <template v-slot:append-item>
@@ -209,7 +209,7 @@ function printData() {
                                         <v-select
                                             v-model="Customer"
                                             :items="customerItems"
-                                            density="compact"
+                                            density="comfortable"
                                             hide-details
                                         >
                                             <template v-slot:append-item>
@@ -230,7 +230,7 @@ function printData() {
                                     <v-col cols="8">
                                         <v-text-field
                                             v-model="Remark"
-                                            density="compact"
+                                            density="comfortable"
                                             hide-details
                                         ></v-text-field>
                                     </v-col>

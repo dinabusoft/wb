@@ -52,7 +52,8 @@ class Device extends Model
 'log',
 'created_by',
 'updated_by',
-'deleted_by'];
+'deleted_by',
+'user_id'];
 
     /**
     * Date time columns.
@@ -86,4 +87,11 @@ class Device extends Model
         return $this->belongsTo(User::class, 'deleted_by');
     }
 
+    /**
+     * @return BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

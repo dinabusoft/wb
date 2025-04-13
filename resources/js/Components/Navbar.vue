@@ -6,7 +6,8 @@ const items = ref([
   { title: 'Users', route: '/user',href:'/users' },
   { title: 'Customers', route: '/customer',href:'/mastercustomers' },
   { title: 'Materials', route: '/material',href:'/mastermaterials' },
-  { title: 'Transactions', route: '/transaction',href:'/transactions' }
+  { title: 'Transactions', route: '/transaction',href:'/transactions' },
+  { title: 'Devices', route: '/device',href:'/devices' },
 ]);
 
 const showingProfileDropdown = ref(false);

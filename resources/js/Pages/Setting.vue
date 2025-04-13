@@ -55,7 +55,7 @@ function saveSettings() {
                   v-model="dbSettings.hostname"
                   label="Hostname/IP"
                   variant="outlined"
-                  density="compact"
+                  density="comfortable"
                 ></v-text-field>
               </v-col>
               <v-col cols="12" md="6">
@@ -63,7 +63,7 @@ function saveSettings() {
                   v-model="dbSettings.user"
                   label="User"
                   variant="outlined"
-                  density="compact"
+                  density="comfortable"
                 ></v-text-field>
               </v-col>
               <v-col cols="12" md="6">
@@ -72,7 +72,7 @@ function saveSettings() {
                   label="Password"
                   type="password"
                   variant="outlined"
-                  density="compact"
+                  density="comfortable"
                 ></v-text-field>
               </v-col>
               <v-col cols="12" md="6">
@@ -80,7 +80,7 @@ function saveSettings() {
                   v-model="dbSettings.port"
                   label="Port"
                   variant="outlined"
-                  density="compact"
+                  density="comfortable"
                 ></v-text-field>
               </v-col>
               <v-col cols="12">
@@ -88,7 +88,7 @@ function saveSettings() {
                   v-model="dbSettings.database"
                   label="Database"
                   variant="outlined"
-                  density="compact"
+                  density="comfortable"
                 ></v-text-field>
               </v-col>
             </v-row>
@@ -107,7 +107,7 @@ function saveSettings() {
                   label="Unit weight"
                   :items="['Kg', 'Lb', 'Ton']"
                   variant="outlined"
-                  density="compact"
+                  density="comfortable"
                 ></v-select>
               </v-col>
               <v-col cols="12" md="6">
@@ -116,7 +116,7 @@ function saveSettings() {
                   label="Date format"
                   :items="['dd-mm-yyyy', 'mm-dd-yyyy', 'yyyy-mm-dd']"
                   variant="outlined"
-                  density="compact"
+                  density="comfortable"
                 ></v-select>
               </v-col>
               <v-col cols="12" md="6">
@@ -125,7 +125,7 @@ function saveSettings() {
                   label="Time format"
                   :items="['hh:mm:ss', 'hh:mm', 'h:mm:ss a']"
                   variant="outlined"
-                  density="compact"
+                  density="comfortable"
                 ></v-select>
               </v-col>
               <v-col cols="12" md="6">
@@ -134,7 +134,7 @@ function saveSettings() {
                   label="Report Template"
                   :items="['EDT TEMPLATE', 'STANDARD TEMPLATE', 'CUSTOM TEMPLATE']"
                   variant="outlined"
-                  density="compact"
+                  density="comfortable"
                 ></v-select>
               </v-col>
             </v-row>
@@ -153,7 +153,7 @@ function saveSettings() {
                   label="Port"
                   :items="['1', '2', '3', '4']"
                   variant="outlined"
-                  density="compact"
+                  density="comfortable"
                 ></v-select>
               </v-col>
               <v-col cols="12" md="4">
@@ -162,7 +162,7 @@ function saveSettings() {
                   label="Baudrate"
                   :items="['9600', '19200', '38400', '57600', '115200']"
                   variant="outlined"
-                  density="compact"
+                  density="comfortable"
                 ></v-select>
               </v-col>
               <v-col cols="12" md="4">
@@ -171,7 +171,7 @@ function saveSettings() {
                   label="Data bits"
                   :items="['5', '6', '7', '8']"
                   variant="outlined"
-                  density="compact"
+                  density="comfortable"
                 ></v-select>
               </v-col>
               <v-col cols="12" md="4">
@@ -180,7 +180,7 @@ function saveSettings() {
                   label="Stop bits"
                   :items="['1', '1.5', '2']"
                   variant="outlined"
-                  density="compact"
+                  density="comfortable"
                 ></v-select>
               </v-col>
               <v-col cols="12" md="4">
@@ -189,7 +189,7 @@ function saveSettings() {
                   label="Parity"
                   :items="['none', 'odd', 'even', 'mark', 'space']"
                   variant="outlined"
-                  density="compact"
+                  density="comfortable"
                 ></v-select>
               </v-col>
               <v-col cols="12" md="4">
@@ -197,7 +197,7 @@ function saveSettings() {
                   v-model="serialSettings.inputLen"
                   label="InputLen"
                   variant="outlined"
-                  density="compact"
+                  density="comfortable"
                 ></v-text-field>
               </v-col>
               <v-col cols="12" md="4">
@@ -205,7 +205,7 @@ function saveSettings() {
                   v-model="serialSettings.threshold"
                   label="Threshold"
                   variant="outlined"
-                  density="compact"
+                  density="comfortable"
                 ></v-text-field>
               </v-col>
               <v-col cols="12" md="4">
@@ -213,7 +213,7 @@ function saveSettings() {
                   v-model="serialSettings.delimiter"
                   label="Delimiter"
                   variant="outlined"
-                  density="compact"
+                  density="comfortable"
                 ></v-text-field>
               </v-col>
               <v-col cols="12" md="4">
@@ -221,7 +221,7 @@ function saveSettings() {
                   v-model="serialSettings.index"
                   label="Index"
                   variant="outlined"
-                  density="compact"
+                  density="comfortable"
                 ></v-text-field>
               </v-col>
             </v-row>
