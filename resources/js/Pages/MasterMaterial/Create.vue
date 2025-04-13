@@ -1,13 +1,15 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 import { Head, Link, useForm, router } from '@inertiajs/vue3'
+import { ref } from 'vue';
+import Navbar from '@/Components/Navbar.vue';
 
 const props = defineProps({
     data: {
         type: Object,
         required: true,
     },
-})
+}) 
 
 const form = useForm({
     code: props.data?.code||null,
@@ -30,11 +32,19 @@ const submit = () => {
 <template>
 
     <Head title="Create Master Material" />
-    <AuthenticatedLayout>
-        <div class="mb-5">
+    <v-app>
+    <Navbar />
+    <v-main>
+      <v-container class="py-6">
+        <v-card>
+          <v-card-title class="bg-grey-lighten-3 px-4 py-3">
+            <v-icon icon="mdi-package-variant" class="mr-2" color="#303F9F"></v-icon>
+            <span style="color: #303F9F;">CREATE METERIAL</span>
+          </v-card-title>
+        <!-- <div class="mb-5">
             <h5 class="text-h5 font-weight-bold">Create Master Material</h5>
             <v-breadcrumbs :items="breadcrumbs"></v-breadcrumbs>
-        </div>
+        </div> -->
         <v-card>
             <v-form @submit.prevent="submit">
                 <v-card-text>
@@ -68,13 +78,16 @@ const submit = () => {
                 <v-card-actions>
                     <v-spacer />
                     <Link href="/mastermaterials" as="div">
-                    <v-btn text>Cancel</v-btn>
+                    <v-btn type="submit" color="#303F9F" variant="flat" >Cancel</v-btn>
                     </Link>
-                    <v-btn type="submit" color="primary">Create</v-btn>
+                    <v-btn type="submit" color="#303F9F" variant="flat" > <v-icon left>mdi-plus</v-icon> Create</v-btn>
                 </v-card-actions>
             </v-form>
         </v-card>
-    </AuthenticatedLayout>
+    </v-card>
+      </v-container>
+    </v-main>
+  </v-app>
 </template>
 
 <script>
@@ -88,9 +101,9 @@ export default {
             ],
             breadcrumbs: [
                 {
-                    title: 'Dashboard',
+                    title: 'Home',
                     disabled: false,
-                    href: '/dashboard',
+                    href: '/home',
                 },
                 {
                     title: 'MasterMaterial',

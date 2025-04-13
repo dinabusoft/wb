@@ -36,8 +36,7 @@ const submit = () => {
 </script>
 
 <template>
-
-    <Head title="Transaction" />
+    <Head title="Edit Transaction" />
     <v-app>
         <Navbar />
         <v-main>
@@ -137,7 +136,7 @@ export default {
             ],
             breadcrumbs: [
                 {
-                    title: 'home',
+                    title: 'Home',
                     disabled: false,
                     href: '/home',
                 },
@@ -217,6 +216,5 @@ export default {
             this.loading_customer = false
         },
     },
-
 }
 </script>

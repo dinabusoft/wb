@@ -31,7 +31,6 @@ class Transaction extends Model
 {
     
     use SoftDeletes;
-
     /**
     * Database table name
     */
@@ -40,7 +39,7 @@ class Transaction extends Model
     /**
     * Mass assignable columns
     */
-    protected $fillable=['deleted_by',
+    protected $fillable=[
 'date_in',
 'date_out',
 'time_in',

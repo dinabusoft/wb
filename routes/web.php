@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\MasterCustomerController;
 use App\Http\Controllers\Api\MasterMaterialController;
 use App\Http\Controllers\Api\TransactionController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\StatusController;
 use App\Http\Controllers\Api\UsersRoleController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -38,6 +39,12 @@ Route::middleware('auth')->group(function () {
     Route::resource('mastermaterials',MasterMaterialController::class);
     Route::resource('transactions',TransactionController::class);
     Route::resource('users',UserController::class);
+    Route::resource('status',StatusController::class);
+
+    Route::get('/master_materials/options', [MasterMaterialController::class, 'getOptions']);
+    Route::get('/master_customers/options', [MasterCustomerController::class, 'getOptions']);
+    Route::get('transactions/{transaction}/out',[TransactionController::class, 'showOut']);
+    Route::put('/transactions/{transaction}/out', [TransactionController::class, 'saveOut'])->name('transactions.out');
     //Route::resource('usersroles',UsersRoleController::class);
     Route::get('/transactions-export',[TransactionController::class, 'export']);
 });
@@ -57,10 +64,10 @@ Route::middleware('auth')->group(function () {
     return Inertia::render('Administrasi/User');
 })->name('admin-user');
      Route::get('/admin-customer', function () {
-    return Inertia::render('Administrasi/Customer');
+    return Inertia::render('MasterCustomer/Index');
 })->name('admin-customer');
      Route::get('/admin-material', function () {
-    return Inertia::render('Administrasi/Material');
+    return Inertia::render('MasterMaterial/Index');
 })->name('admin-material');
 
 

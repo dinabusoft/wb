@@ -1,7 +1,6 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 import { Head, Link, useForm, router } from '@inertiajs/vue3'
-
 import Navbar from '@/Components/Navbar.vue';
 
 const props = defineProps({

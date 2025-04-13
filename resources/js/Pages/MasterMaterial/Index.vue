@@ -1,15 +1,24 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 import { Head, Link, router } from '@inertiajs/vue3'
+import { ref } from 'vue';
+import Navbar from '@/Components/Navbar.vue';
 </script>
 
 <template>
 
-  <Head title="MasterMaterial" />
-  <AuthenticatedLayout>
+  <Head title="Material Management" />
+  <v-app>
+    <Navbar />
+    <v-main>
+      <v-container class="py-6">
+        <v-card>
+          <v-card-title class="bg-grey-lighten-3 px-4 py-3">
+            <v-icon icon="mdi-package-variant" class="mr-2" color="#303F9F"></v-icon>
+            <span style="color: #303F9F;">METERIAL MANAGEMENT</span>
+          </v-card-title>
     <div class="mb-5">
-      <h5 class="text-h5 font-weight-bold">Master Material</h5>
-      <v-breadcrumbs :items="breadcrumbs"></v-breadcrumbs>
+      <!-- <v-breadcrumbs :items="breadcrumbs"></v-breadcrumbs> -->
       <v-snackbar v-model="notif.show " :color="notif.color" location="center">
         {{ notif.message }}
         <v-btn text @click="notif.show = false">Close</v-btn>
@@ -22,31 +31,28 @@ import { Head, Link, router } from '@inertiajs/vue3'
         <v-text-field v-model="search" label="Search" variant="underlined" prepend-inner-icon="mdi-magnify" hide-details
           clearable single-line />
         <v-spacer />
-        <Link href="/mastermaterials/create" as="div">
-        <v-btn color="primary">Create</v-btn>
-        </Link>
+        <v-btn color="#303F9F" variant="flat" href="/mastermaterials/create" class="text-none">
+                  <v-icon left>mdi-plus</v-icon>
+                  Add Material
+                </v-btn> 
       </div>
       <v-data-table-server v-model:options="options" :items="items" :items-length="totalItems" :headers="headers"
         :search="search" class="elevation-0" :loading="isLoadingTable" @update:options="loadItems">
         <template #[`item.status`]="{ item }">{{ item.status == '1' ? 'Active' : 'Inactive' }}</template>
         <template #[`item.action`]="{ item }">
           <v-btn :href="`/mastermaterials/${item.id}`" variant="text">
-            <template v-slot:prepend>
-              <v-icon color="info" icon="mdi-content-duplicate" size="small" />
-            </template>
-            Clone
+            <span style="color: #303F9F;">clone</span>
+              <v-icon color="#303F9F" icon="mdi-content-duplicate" size="small" />
+
           </v-btn>
           <v-btn :href="`/mastermaterials/${item.id}/edit`" variant="text">
-            <template v-slot:prepend>
-              <v-icon color="warning" icon="mdi-pencil" size="small" />
-            </template>
-            Edit
+            <span style="color: #303F9F;">edit</span>
+              <v-icon color="#303F9F" icon="mdi-pencil" size="small" />
+
           </v-btn>
           <v-btn @click="deleteItem(item)" variant="text">
-            <template v-slot:prepend>
-              <v-icon class="ml-2" color="error" icon="mdi-delete" size="small" />
-            </template>
-            Delete
+            <span style="color: #303F9F;">delete</span>
+              <v-icon class="ml-2" color="#303F9F" icon="mdi-delete" size="small" />
           </v-btn>
         </template>
       </v-data-table-server>
@@ -63,7 +69,10 @@ import { Head, Link, router } from '@inertiajs/vue3'
         </v-card>
       </v-dialog>
     </v-row>
-  </AuthenticatedLayout>
+  </v-card>
+      </v-container>
+    </v-main>
+  </v-app>
 </template>
 
 <script>
@@ -98,9 +107,9 @@ export default {
       totalItems: 0,
       breadcrumbs: [
         {
-          title: 'Dashboard',
+          title: 'home',
           disabled: false,
-          href: '/dashboard',
+          href: '/home',
         },
         {
           title: 'MasterMaterial',

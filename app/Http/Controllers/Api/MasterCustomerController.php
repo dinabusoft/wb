@@ -37,6 +37,13 @@ class MasterCustomerController extends ApiController
         return inertia('MasterCustomer/Index');
     }
 
+      public function getOptions(Request $request)
+    {
+        return response()->json([
+        'customers' => MasterCustomer::select('id', 'name')->get()
+    ]);
+    }
+
     //form create
     public function create()
     {

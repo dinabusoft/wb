@@ -69,9 +69,6 @@ import Navbar from '@/Components/Navbar.vue';
     </v-main>
     
   </v-app>
-
-
-
 </template>
 
 <script>
@@ -114,7 +111,7 @@ export default {
       totalItems: 0,
       breadcrumbs: [
         {
-          title: 'home',
+          title: 'Home',
           disabled: false,
           href: '/home',
         },
@@ -192,6 +189,6 @@ export default {
         })
     },
   },
-  
+
 }
 </script>

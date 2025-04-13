@@ -111,7 +111,7 @@ export default {
       totalItems: 0,
       breadcrumbs: [
         {
-          title: 'home',
+          title: 'Home',
           disabled: false,
           href: '/home',
         },
@@ -154,7 +154,6 @@ export default {
           this.notif.color = 'error'
           this.isLoadingTable = false
         })
-
     },
     deleteItem(item) {
       this.deleteId = item.id

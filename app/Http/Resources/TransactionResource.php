@@ -17,13 +17,14 @@ class TransactionResource extends JsonResource
         return [
 			"id" => $this->id,
 			"ticket_id" => sprintf( 'WB%08d', $this->id ),
+
 			"date_in" => $this->date_in,
 			"date_out" => $this->date_out,
 			"time_in" => $this->time_in,
 			"time_out" => $this->time_out,
 			"weight_in" => $this->weight_in,
 			"weight_out" => $this->weight_out,
-			"ref_no" => $this->ref_no,
+			"ref_no" => $this->ref_no, 
 			"police_no" => $this->police_no,
 			"driver_name" => $this->driver_name,
 			"driver_phone" => $this->driver_phone,

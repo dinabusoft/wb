@@ -34,7 +34,6 @@ const submit = () => {
 </script>
 
 <template>
-
     <Head title="Customer Management" />
     <v-app>
         <Navbar />
@@ -117,7 +116,7 @@ export default {
             ],
             breadcrumbs: [
                 {
-                    title: 'home',
+                    title: 'Home',
                     disabled: false,
                     href: '/home',
                 },
