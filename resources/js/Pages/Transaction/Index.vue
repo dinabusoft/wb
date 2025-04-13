@@ -35,7 +35,6 @@ import Navbar from '@/Components/Navbar.vue';
           </div>
           <v-data-table-server v-model:options="options" :items="items" :items-length="totalItems" :headers="headers"
             :search="search" class="elevation-0" :loading="isLoadingTable" @update:options="loadItems">
-            <template #[`item.status`]="{ item }">{{ item.status == '1' ? 'Active' : 'Inactive' }}</template>
             <template #[`item.action`]="{ item }">
               <v-btn :href="`/transactions/${item.id}`" variant="text" color="#303F9F">
                 <v-icon>mdi-content-copy</v-icon>
@@ -95,10 +94,10 @@ export default {
         { title: 'Weight Out', key: 'weight_out' },
         { title: 'Ref No', key: 'ref_no' },
         { title: 'Police No', key: 'police_no' },
-        { title: 'Driver Name', key: 'time_out' },
+        { title: 'Driver Name', key: 'driver_name' },
         { title: 'Driver Phone', key: 'driver_phone' },
-        { title: 'Material Id', key: 'time_out' },
-        { title: 'Customer Id', key: 'ref_no' },
+        { title: 'Material', key: 'materials_name' },
+        { title: 'Customer Id', key: 'customers_name' },
         { title: 'Remark', key: 'remark' },
         { title: 'Date Created', key: 'created_at' },
         { title: 'Created by', key: 'created_by_name' },

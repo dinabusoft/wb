@@ -57,19 +57,19 @@ function addCustomer() {
             <!-- Add Customer Form -->
             <v-row class="mb-4">
               <v-col cols="12" md="3">
-                <v-text-field v-model="newCustomer.code" label="Customer Code" variant="outlined" density="compact"></v-text-field>
+                <v-text-field v-model="newCustomer.code" label="Customer Code" variant="outlined" density="comfortable"></v-text-field>
               </v-col>
               <v-col cols="12" md="3">
-                <v-text-field v-model="newCustomer.name" label="Company Name" variant="outlined" density="compact"></v-text-field>
+                <v-text-field v-model="newCustomer.name" label="Company Name" variant="outlined" density="comfortable"></v-text-field>
               </v-col>
               <v-col cols="12" md="3">
-                <v-text-field v-model="newCustomer.address" label="Address" variant="outlined" density="compact"></v-text-field>
+                <v-text-field v-model="newCustomer.address" label="Address" variant="outlined" density="comfortable"></v-text-field>
               </v-col>
               <v-col cols="12" md="3">
-                <v-text-field v-model="newCustomer.phone" label="Phone" variant="outlined" density="compact"></v-text-field>
+                <v-text-field v-model="newCustomer.phone" label="Phone" variant="outlined" density="comfortable"></v-text-field>
               </v-col>
               <v-col cols="12" md="3">
-                <v-select v-model="newCustomer.status" label="Status" :items="['Active', 'Inactive']" variant="outlined" density="compact"></v-select>
+                <v-select v-model="newCustomer.status" label="Status" :items="['Active', 'Inactive']" variant="outlined" density="comfortable"></v-select>
               </v-col>
               <v-col cols="12" md="3" class="d-flex align-end">
                 

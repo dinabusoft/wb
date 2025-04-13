@@ -50,44 +50,44 @@ const submit = () => {
                         <v-card-text>
                             <v-row>
                                 <v-col cols="12" sm="12" md="6">
-                                    <v-text-field v-model="form.name" label="Name" variant="underlined"
+                                    <v-text-field v-model="form.name" label="Name" variant="outlined"
                                         :error-messages="form.errors.name" />
                                 </v-col>
                                 <v-col cols="12" sm="12" md="6">
-                                    <v-text-field v-model="form.street" label="Street" variant="underlined"
+                                    <v-text-field v-model="form.street" label="Street" variant="outlined"
                                         :error-messages="form.errors.street" />
                                 </v-col>
                                 <v-col cols="12" sm="12" md="6">
-                                    <v-text-field v-model="form.district" label="District" variant="underlined"
+                                    <v-text-field v-model="form.district" label="District" variant="outlined"
                                         :error-messages="form.errors.district" />
                                 </v-col>
                                 <v-col cols="12" sm="12" md="6">
-                                    <v-text-field v-model="form.regency" label="Regency" variant="underlined"
+                                    <v-text-field v-model="form.regency" label="Regency" variant="outlined"
                                         :error-messages="form.errors.regency" />
                                 </v-col>
                                 <v-col cols="12" sm="12" md="6">
-                                    <v-text-field v-model="form.province" label="Province" variant="underlined"
+                                    <v-text-field v-model="form.province" label="Province" variant="outlined"
                                         :error-messages="form.errors.province" />
                                 </v-col>
                                 <v-col cols="12" sm="12" md="6">
-                                    <v-text-field v-model="form.postalcode" label="Postal Code" variant="underlined"
+                                    <v-text-field v-model="form.postalcode" label="Postal Code" variant="outlined"
                                         :error-messages="form.errors.postalcode" />
                                 </v-col>
                                 <v-col cols="12" sm="12" md="6">
-                                    <v-text-field v-model="form.telephone" label="Telephone" variant="underlined"
+                                    <v-text-field v-model="form.telephone" label="Telephone" variant="outlined"
                                         :error-messages="form.errors.telephone" />
                                 </v-col>
                                 <v-col cols="12" sm="12" md="6">
-                                    <v-text-field v-model="form.phone" label="Phone" variant="underlined"
+                                    <v-text-field v-model="form.phone" label="Phone" variant="outlined"
                                         :error-messages="form.errors.phone" />
                                 </v-col>
                                 <v-col cols="12" sm="12" md="6">
                                     <v-select v-model="form.status" :items="statuses" item-title="text"
-                                        item-value="value" label="Status" variant="underlined"
-                                        :error-messages="form.errors.status"/>
+                                        item-value="value" label="Status" variant="outlined"
+                                        :error-messages="form.errors.status" />
                                 </v-col>
                                 <v-col cols="12" sm="12">
-                                    <v-textarea v-model="form.remark" label="Remark" variant="underlined"
+                                    <v-textarea v-model="form.remark" label="Remark" variant="outlined"
                                         :error-messages="form.errors.remark" />
                                 </v-col>
                             </v-row>

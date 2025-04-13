@@ -57,19 +57,19 @@ function addMaterial() {
             <!-- Add Material Form -->
             <v-row class="mb-4">
               <v-col cols="12" md="3">
-                <v-text-field v-model="newMaterial.code" label="Material Code" variant="outlined" density="compact"></v-text-field>
+                <v-text-field v-model="newMaterial.code" label="Material Code" variant="outlined" density="comfortable"></v-text-field>
               </v-col>
               <v-col cols="12" md="3">
-                <v-text-field v-model="newMaterial.name" label="Material Name" variant="outlined" density="compact"></v-text-field>
+                <v-text-field v-model="newMaterial.name" label="Material Name" variant="outlined" density="comfortable"></v-text-field>
               </v-col>
               <v-col cols="12" md="2">
-                <v-select v-model="newMaterial.unit" label="Unit" :items="['Kg', 'Ton', 'Lb']" variant="outlined" density="compact"></v-select>
+                <v-select v-model="newMaterial.unit" label="Unit" :items="['Kg', 'Ton', 'Lb']" variant="outlined" density="comfortable"></v-select>
               </v-col>
               <v-col cols="12" md="2">
-                <v-text-field v-model="newMaterial.price" label="Price" variant="outlined" density="compact"></v-text-field>
+                <v-text-field v-model="newMaterial.price" label="Price" variant="outlined" density="comfortable"></v-text-field>
               </v-col>
               <v-col cols="12" md="2">
-                <v-select v-model="newMaterial.status" label="Status" :items="['Active', 'Inactive']" variant="outlined" density="compact"></v-select>
+                <v-select v-model="newMaterial.status" label="Status" :items="['Active', 'Inactive']" variant="outlined" density="comfortable"></v-select>
               </v-col>
               <v-col cols="12" md="2" class="d-flex align-end">
                 

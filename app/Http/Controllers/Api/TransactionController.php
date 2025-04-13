@@ -8,8 +8,9 @@ use App\Models\Transaction;
 use App\Http\Requests\TransactionRequest;
 use App\Http\Resources\TransactionResource;
 use App\Models\MasterCustomer;
-
-
+use App\Exports\TransactionExport;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Response;
 /**
  * Transaction
  *
@@ -23,12 +24,32 @@ class TransactionController extends ApiController
     public function index(Request $request)
     {
         if ($request->wantsJson()) {
-            $query = Transaction::query()->when($request->get('search'), function ($query, $search) {
+            $query = Transaction::with('material', 'customer')->when($request->get('search'), function ($query, $search) {
                 $search = strtolower(trim($search));
-                return $query->whereRaw('(LOWER(code) LIKE ? or LOWER(name) LIKE ? or LOWER(pack) LIKE ? or LOWER(content) LIKE ? or LOWER(remark) LIKE ?)', ["%$search%","%$search%","%$search%","%$search%","%$search%"]);
+                return $query->whereRaw('(LOWER(ref_no) LIKE ? or LOWER(police_no) LIKE ? or LOWER(driver_name) LIKE ? or LOWER(remark) LIKE ?)', ["%$search%","%$search%","%$search%","%$search%"])
+                        ->orWhereHas('material', function ($query) use ($search) {
+                            $search = strtolower(trim($search));
+                            return $query->where('master_materials.name', 'like',  '%' . $search . '%');
+                        })->orWhereHas('customer', function ($query) use ($search) {
+                            $search = strtolower(trim($search));
+                            return $query->where('master_customers.name', 'like',  '%' . $search . '%');
+                        });
+            })->when($request->get('filter'), function ($query, $filters) {
+                foreach ($filters as $field => $value) {
+                    if (!empty($value)) {
+                        if($field == 'date_in_begin') $query->where('date_in','>=', $value);
+                        elseif($field == 'date_in_end') $query->where('date_in','<=', $value);
+                        elseif($field == 'status' && $value=='All Status' ) continue;
+                        elseif($field == 'status' && $value=='Check In' ) $query->whereNull('date_out');
+                        elseif($field == 'status' && $value=='Check Out' ) $query->whereNotNull('date_out');
+                        elseif($value!=0 )$query->where($field, $value);
+                    }
+                }
+                return $query;
             })->when($request->get('sort'), function ($query, $sortBy) {
+                if($sortBy['key']=='ticket_id') $sortBy['key'] = 'id';
                 return $query->orderBy($sortBy['key'], $sortBy['order']);
-            });
+            })->orderBy('date_in', 'desc')->orderBy('time_in', 'desc');
 
             $data = $query->paginate($request->get('limit', 10));
 
@@ -135,6 +156,12 @@ class TransactionController extends ApiController
                 ]
             ]);
         }
+    }
+
+    public function export(Request $request)
+    {
+        //return Excel::download(new TransactionExport, 'weight_bridge.xlsx', \Maatwebsite\Excel\Excel::XLSX);
+        return Excel::download(new TransactionExport, 'weight_bridge.xlsx', \Maatwebsite\Excel\Excel::CSV);
     }
 
 }

@@ -1,32 +1,43 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 import { Head, Link, router } from '@inertiajs/vue3'
+import { ref } from 'vue';
+import Navbar from '@/Components/Navbar.vue';
 </script>
 
 <template>
 
-  <Head title="Device" />
-  <AuthenticatedLayout>
-    <div class="mb-5">
-      <h5 class="text-h5 font-weight-bold">Device</h5>
-      <v-breadcrumbs :items="breadcrumbs"></v-breadcrumbs>
-      <v-snackbar v-model="notif.show " :color="notif.color" location="center">
-        {{ notif.message }}
-        <v-btn text @click="notif.show = false">Close</v-btn>
-      </v-snackbar>
-      {{ $page.props?.flash?.success }}
-      {{ $page.props?.flash?.error }}
-    </div>
-    <v-card class="pa-4">
-      <div class="d-flex flex-wrap align-center">
-        <v-text-field v-model="search" label="Search" variant="underlined" prepend-inner-icon="mdi-magnify" hide-details
-          clearable single-line />
-        <v-spacer />
-        <Link href="/devices/create" as="div">
-        <v-btn color="primary">Create</v-btn>
-        </Link>
-      </div>
-      <v-data-table-server v-model:options="options" :items="items" :items-length="totalItems" :headers="headers"
+  <Head title="Customer Management" />
+  <v-app>
+    <Navbar />
+    <v-main>
+      <v-container class="py-6">
+          <v-card-title class="bg-grey-lighten-3 px-4 py-3">
+            <v-icon icon="mdi-account-group" class="mr-2" color="#303F9F"></v-icon>
+            <span style="color: #303F9F;">USER DEVICE CONNECTION</span>
+            <v-breadcrumbs :items="breadcrumbs"></v-breadcrumbs>
+            <v-snackbar v-model="notif.show" :color="notif.color" location="center">
+              {{ notif.message }}
+              <v-btn text @click="notif.show = false">Close</v-btn>
+            </v-snackbar>
+            {{ $page.props?.flash?.success }}
+            {{ $page.props?.flash?.error }}
+          </v-card-title>
+
+
+          <v-card class="pa-4">
+            <div class="d-flex flex-wrap align-center">
+              <v-text-field v-model="search" label="Search" variant="underlined" prepend-inner-icon="mdi-magnify"
+                hide-details clearable single-line />
+              <v-spacer />
+             
+              <v-btn color="#303F9F" variant="flat" href="/devices/create" class="text-none">
+                  <v-icon left>mdi-plus</v-icon> <v-spacer class="ms-2"></v-spacer>
+                  Add Device Connection
+                </v-btn>
+
+            </div>
+            <v-data-table-server v-model:options="options" :items="items" :items-length="totalItems" :headers="headers"
         :search="search" class="elevation-0" :loading="isLoadingTable" @update:options="loadItems">
         <template #[`item.status`]="{ item }">{{ item.status == '1' ? 'Active' : 'Inactive' }}</template>
         <template #[`item.action`]="{ item }">
@@ -60,10 +71,12 @@ import { Head, Link, router } from '@inertiajs/vue3'
             <v-btn color="error" text @click="deleteDialog = false">Cancel</v-btn>
             <v-btn color="primary" :loading="isLoading" text @click="submitDelete">Delete</v-btn>
           </v-card-actions>
-        </v-card>
-      </v-dialog>
-    </v-row>
-  </AuthenticatedLayout>
+              </v-card>
+            </v-dialog>
+          </v-row>
+      </v-container>
+    </v-main>
+  </v-app>
 </template>
 
 <script>

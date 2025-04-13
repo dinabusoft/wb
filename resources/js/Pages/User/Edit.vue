@@ -44,23 +44,23 @@ const submit = () => {
                 <v-card-text>
                     <v-row>
                         <v-col cols="12" sm="12" md="6">
-                            <v-text-field v-model="form.name" label="Name" variant="underlined"
+                            <v-text-field v-model="form.name" label="Name" variant="outlined"
                                 :error-messages="form.errors.name" />
                         </v-col>
                         <v-col cols="12" sm="12" md="6">
-                            <v-text-field v-model="form.email" label="Email" variant="underlined"
+                            <v-text-field v-model="form.email" label="Email" variant="outlined"
                                 :error-messages="form.errors.email" />
                         </v-col>
                         <v-col cols="12" sm="12" md="6">
-                            <v-text-field v-model="form.password" label="Password" variant="underlined"
+                            <v-text-field v-model="form.password" label="Password" variant="outlined"
                                 :error-messages="form.errors.password" />
                          </v-col>
                          <v-col cols="12" sm="12" md="6">
                             <v-text-field v-model="form.password_confirmation" label="Confirm Password"
-                                variant="underlined" :error-messages="form.errors.password_confirmation" />
+                                variant="outlined" :error-messages="form.errors.password_confirmation" />
                         </v-col>
                         <v-col cols="12" sm="12" md="6">
-                            <v-select v-model="form.role" :items="role" label="Role" :error-messages="form.errors.role" chips></v-select>
+                            <v-select v-model="form.role" :items="role" label="Role" :error-messages="form.errors.role" density="comfortable" variant="outlined" clearable ></v-select>
                         </v-col>
                     </v-row>
                 </v-card-text>
