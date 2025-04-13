@@ -6,9 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Api\ApiController;
 use App\Models\Transaction;
 use App\Http\Requests\TransactionRequest;
-use App\Http\Requests\TransactionRequest1;
-use App\Http\Resources\TransactionResource;
-use App\Models\MasterCustomer;
+use App\Http\Requests\TransactionInOutRequest;
 use App\Http\Resources\TransactionResource;
 use App\Models\MasterCustomer;
 use App\Exports\TransactionExport;
@@ -77,7 +75,7 @@ class TransactionController extends ApiController
     }
 
     //save new data
-    public function storeCheckIn(TransactionRequest $request)
+    public function storeCheckIn(TransactionInOutRequest $request)
     {
 
        \Log::info('Request Data:', $request->all());

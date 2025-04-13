@@ -2,6 +2,29 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 import { Head, Link, useForm, router } from '@inertiajs/vue3'
 import Navbar from '@/Components/Navbar.vue';
+
+const props = defineProps({
+    data: {
+        type: Object,
+        required: false,
+    },
+});
+
+const form = useForm({
+    date_in: props.data?.date_in || null,
+    date_out: props.data?.date_out || null,
+    time_in: props.data?.time_in || null,
+    time_out: props.data?.time_out || null,
+    weight_in: props.data?.weight_in || null,
+    weight_out: props.data?.weight_out || null,
+    ref_no: props.data?.ref_no || null,
+    police_no: props.data?.police_no || null,
+    driver_name: props.data?.driver_name || null,
+    driver_phone: props.data?.driver_phone || null,
+    materials_id: props.data?.materials_id || null,
+    customers_id: props.data?.customers_id || null,
+    remark: props.data?.remark || null,
+});
 //new dihapus
 const submit = () => {
     form.post('/transactions', {
@@ -30,19 +53,19 @@ const submit = () => {
                         <v-card-text>
                             <v-row>
                                 <v-col cols="12" sm="12" md="6">
-                                    <v-text-field v-model="form.date_in" label="Date In" variant="outlined"
+                                    <v-text-field v-model="form.date_in" label="Date In" variant="outlined" type="date"
                                         :error-messages="form.errors.date_in" />
                                 </v-col>
                                 <v-col cols="12" sm="12" md="6">
-                                    <v-text-field v-model="form.date_out" label="Date Out" variant="outlined"
+                                    <v-text-field v-model="form.date_out" label="Date Out" variant="outlined" type="date"
                                         :error-messages="form.errors.date_out" />
                                 </v-col>
                                 <v-col cols="12" sm="12" md="6">
-                                    <v-text-field v-model="form.time_in" label="Time In" variant="outlined"
+                                    <v-text-field v-model="form.time_in" label="Time In" variant="outlined" type="time"
                                         :error-messages="form.errors.time_in" />
                                 </v-col>
                                 <v-col cols="12" sm="12" md="6">
-                                    <v-text-field v-model="form.time_out" label="Time Out" variant="outlined"
+                                    <v-text-field v-model="form.time_out" label="Time Out" variant="outlined" type="time"
                                         :error-messages="form.errors.time_out" />
                                 </v-col>
                                 <v-col cols="12" sm="12" md="6">
@@ -73,14 +96,14 @@ const submit = () => {
                                     <!--//new-->
                                     <v-autocomplete v-model="form.materials_id" label="Material" :items="items_material"
                                         v-model:search="search_material" :loading="loading_material" item-title="text"
-                                        item-value="value" density="comfortable" variant="outlined" clearable 
+                                        item-value="value" density="comfortable" variant="outlined" clearable
                                         :error-messages="form.errors.materials_id" />
                                 </v-col>
                                 <v-col cols="12" sm="12" md="6">
                                     <!--//new-->
                                     <v-autocomplete v-model="form.customers_id" label="Customer" :items="items_customer"
                                         v-model:search="search_customer" :loading="loading_customer" item-title="text"
-                                        item-value="value" density="comfortable" variant="outlined" clearable 
+                                        item-value="value" density="comfortable" variant="outlined" clearable
                                         :error-messages="form.errors.customers_id" />
                                 </v-col>
 
@@ -107,29 +130,8 @@ const submit = () => {
 <script>
 export default {
     name: 'TransactionCreate',
-    props: {
-        data: {
-            type: Object,
-            required: false,
-        },
-    },
     data() {
         return {
-            form: useForm({
-                date_in: this.props?.data?.date_in || null,
-                date_out: this.props?.data?.date_out || null,
-                time_in: this.props?.data?.time_in || null,
-                time_out: this.props?.data?.time_out || null,
-                weight_in: this.props?.data?.weight_in || null,
-                weight_out: this.props?.data?.weight_out || null,
-                ref_no: this.props?.data?.ref_no || null,
-                police_no: this.props?.data?.police_no || null,
-                driver_name: this.props?.data?.driver_name || null,
-                driver_phone: this.props?.data?.driver_phone || null,
-                materials_id: this.props?.data?.materials_id || null,
-                customers_id: this.props?.data?.customers_id || null,
-                remark: this.props?.data?.remark || null,
-            }),
             items_material: [],//new
             search_material: null,//new
             last_search_material: null,//new

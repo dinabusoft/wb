@@ -51,19 +51,19 @@ const submit = () => {
                         <v-card-text>
                             <v-row>
                                 <v-col cols="12" sm="12" md="6">
-                                    <v-text-field v-model="form.date_in" label="Date In" variant="outlined"
+                                    <v-text-field v-model="form.date_in" label="Date In" variant="outlined" type="date"
                                         :error-messages="form.errors.date_in" />
                                 </v-col>
                                 <v-col cols="12" sm="12" md="6">
-                                    <v-text-field v-model="form.date_out" label="Date Out" variant="outlined"
+                                    <v-text-field v-model="form.date_out" label="Date Out" variant="outlined" type="date"
                                         :error-messages="form.errors.date_out" />
                                 </v-col>
                                 <v-col cols="12" sm="12" md="6">
-                                    <v-text-field v-model="form.time_in" label="Time In" variant="outlined"
+                                    <v-text-field v-model="form.time_in" label="Time In" variant="outlined" type="time"
                                         :error-messages="form.errors.time_in" />
                                 </v-col>
                                 <v-col cols="12" sm="12" md="6">
-                                    <v-text-field v-model="form.time_out" label="Time Out" variant="outlined"
+                                    <v-text-field v-model="form.time_out" label="Time Out" variant="outlined" type="time"
                                         :error-messages="form.errors.time_out" />
                                 </v-col>
                                 <v-col cols="12" sm="12" md="6">

@@ -6,7 +6,7 @@ use App\Http\Controllers\Api\MasterCustomerController;
 use App\Http\Controllers\Api\MasterMaterialController;
 use App\Http\Controllers\Api\TransactionController;
 use App\Http\Controllers\Api\UserController;
-use App\Http\Controllers\Api\StatusController;
+//use App\Http\Controllers\Api\StatusController;
 use App\Http\Controllers\Api\UsersRoleController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -39,12 +39,13 @@ Route::middleware('auth')->group(function () {
     Route::resource('mastermaterials',MasterMaterialController::class);
     Route::resource('transactions',TransactionController::class);
     Route::resource('users',UserController::class);
-    Route::resource('status',StatusController::class);
+    //Route::resource('status',StatusController::class);
 
     Route::get('/master_materials/options', [MasterMaterialController::class, 'getOptions']);
     Route::get('/master_customers/options', [MasterCustomerController::class, 'getOptions']);
     Route::get('transactions/{transaction}/out',[TransactionController::class, 'showOut']);
     Route::put('/transactions/{transaction}/out', [TransactionController::class, 'saveOut'])->name('transactions.out');
+    Route::post('/transactions/in',[TransactionController::class, 'storeCheckIn']);
     //Route::resource('usersroles',UsersRoleController::class);
     Route::get('/transactions-export',[TransactionController::class, 'export']);
 });

@@ -178,7 +178,7 @@ export default {
         { title: 'Driver Name', key: 'driver_name' },
         { title: 'Driver Phone', key: 'driver_phone' },
         { title: 'Material', key: 'materials_name' },
-        { title: 'Customer Id', key: 'customers_name' },
+        { title: 'Customer', key: 'customers_name' },
         { title: 'Remark', key: 'remark' },
       ],
       items: [],
