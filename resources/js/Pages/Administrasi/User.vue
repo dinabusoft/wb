@@ -59,22 +59,22 @@ function addUser() {
             <!-- Add User Form -->
             <v-row class="mb-4">
               <v-col cols="12" md="3">
-                <v-text-field v-model="newUser.username" label="Username" variant="outlined" density="compact"></v-text-field>
+                <v-text-field v-model="newUser.username" label="Username" variant="outlined" density="comfortable"></v-text-field>
               </v-col>
               <v-col cols="12" md="3">
-                <v-text-field v-model="newUser.name" label="Full Name" variant="outlined" density="compact"></v-text-field>
+                <v-text-field v-model="newUser.name" label="Full Name" variant="outlined" density="comfortable"></v-text-field>
               </v-col>
               <v-col cols="12" md="3">
-                <v-text-field v-model="newUser.email" label="Email" variant="outlined" density="compact"></v-text-field>
+                <v-text-field v-model="newUser.email" label="Email" variant="outlined" density="comfortable"></v-text-field>
               </v-col>
               <v-col cols="12" md="3">
-                <v-text-field v-model="newUser.password" label="Password" type="password" variant="outlined" density="compact"></v-text-field>
+                <v-text-field v-model="newUser.password" label="Password" type="password" variant="outlined" density="comfortable"></v-text-field>
               </v-col>
               <v-col cols="12" md="3">
-                <v-select v-model="newUser.role" label="Role" :items="['Administrator', 'Manager', 'Operator']" variant="outlined" density="compact"></v-select>
+                <v-select v-model="newUser.role" label="Role" :items="['Administrator', 'Manager', 'Operator']" variant="outlined" density="comfortable"></v-select>
               </v-col>
               <v-col cols="12" md="3">
-                <v-select v-model="newUser.status" label="Status" :items="['Active', 'Inactive']" variant="outlined" density="compact"></v-select>
+                <v-select v-model="newUser.status" label="Status" :items="['Active', 'Inactive']" variant="outlined" density="comfortable"></v-select>
               </v-col>
               <v-col cols="12" md="3" class="d-flex align-end">
                 

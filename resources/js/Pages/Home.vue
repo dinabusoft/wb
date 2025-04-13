@@ -537,6 +537,7 @@ const exportToPDF = async () => {
                                             v-model="formattedDate"
                                             type="date"
                                             density="compact"
+
                                             hide-details
                                             @update:modelValue="val => formattedDate = val"
                                         ></v-text-field>

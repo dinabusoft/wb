@@ -1,7 +1,5 @@
 <?php
 
-<<<<<<< Updated upstream
-=======
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Api\DeviceController;
 use App\Http\Controllers\Api\MasterCustomerController;
@@ -14,16 +12,8 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\TestMail;
->>>>>>> Stashed changes
 use Inertia\Inertia;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Foundation\Application;
-use App\Http\Controllers\ProfileController;
-use App\Mail\TestMail;
 use Illuminate\Container\Attributes\Auth;
-
-
 
 Route::middleware('guest')->group(function () {
     Route::get('/', function () {
@@ -43,8 +33,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-<<<<<<< Updated upstream
-=======
 
     Route::resource('devices',DeviceController::class);
     Route::resource('mastercustomers',MasterCustomerController::class);
@@ -58,8 +46,8 @@ Route::middleware('auth')->group(function () {
     Route::get('transactions/{transaction}/out',[TransactionController::class, 'showOut']);
     Route::put('/transactions/{transaction}/out', [TransactionController::class, 'saveOut'])->name('transactions.out');
     //Route::resource('usersroles',UsersRoleController::class);
+    Route::get('/transactions-export',[TransactionController::class, 'export']);
 });
->>>>>>> Stashed changes
     Route::get('/home', function () {
     return Inertia::render('Home');
 })->middleware(['auth', 'verified'])->name('home');
@@ -82,9 +70,6 @@ Route::middleware('auth')->group(function () {
     return Inertia::render('MasterMaterial/Index');
 })->name('admin-material');
 
-
-
-});
 
 // Route::get('/forgot-password', function () {
 //     return view('auth.forgot-password');

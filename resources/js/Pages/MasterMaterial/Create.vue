@@ -101,7 +101,7 @@ export default {
             ],
             breadcrumbs: [
                 {
-                    title: 'home',
+                    title: 'Home',
                     disabled: false,
                     href: '/home',
                 },

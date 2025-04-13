@@ -7,11 +7,12 @@
     },
     "devDependencies": {
         "@inertiajs/vue3": "^2.0.0",
+        "@mdi/font": "^7.4.47",
         "@tailwindcss/forms": "^0.5.3",
         "@tailwindcss/vite": "^4.0.0",
         "@vitejs/plugin-vue": "^5.0.0",
         "autoprefixer": "^10.4.12",
-        "axios": "^1.8.2",
+        "axios": "^1.8.4",
         "concurrently": "^9.0.1",
         "laravel-vite-plugin": "^1.2.0",
         "postcss": "^8.4.31",
@@ -22,10 +23,12 @@
     "dependencies": {
         "@mdi/font": "^7.4.47",
         "docx": "^9.3.0",
+        "export-from-json": "^1.7.4",
         "material-design-icons-iconfont": "^6.7.0",
         "moment": "^2.30.1",
         "vue-loader": "^17.4.2",
-        "vuetify": "^3.7.18",
         "xlsx": "^0.18.5"
+        "vue-moment": "^4.1.0",
+        "vuetify": "^3.7.18"
     }
 }

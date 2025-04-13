@@ -7,7 +7,6 @@ import Navbar from '@/Components/Navbar.vue';
 
 <template>
 
-
   <Head title="Material Management" />
   <v-app>
     <Navbar />
@@ -54,8 +53,6 @@ import Navbar from '@/Components/Navbar.vue';
           <v-btn @click="deleteItem(item)" variant="text">
             <span style="color: #303F9F;">delete</span>
               <v-icon class="ml-2" color="#303F9F" icon="mdi-delete" size="small" />
-  
-
           </v-btn>
         </template>
       </v-data-table-server>
@@ -76,7 +73,6 @@ import Navbar from '@/Components/Navbar.vue';
       </v-container>
     </v-main>
   </v-app>
-
 </template>
 
 <script>

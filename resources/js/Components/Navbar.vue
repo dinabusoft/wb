@@ -3,9 +3,11 @@ import { ref, computed } from 'vue';
 import { Link, usePage } from '@inertiajs/vue3';
 
 const items = ref([
-  { title: 'Users', route: '/user',href:'/admin-user' },
-  { title: 'Customers', route: '/customer',href:'/admin-customer' },
-  { title: 'Materials', route: '/material',href:'/admin-material' }
+  { title: 'Users', route: '/user',href:'/users' },
+  { title: 'Customers', route: '/customer',href:'/mastercustomers' },
+  { title: 'Materials', route: '/material',href:'/mastermaterials' },
+  { title: 'Transactions', route: '/transaction',href:'/transactions' },
+  { title: 'Devices', route: '/device',href:'/devices' },
 ]);
 
 const showingProfileDropdown = ref(false);

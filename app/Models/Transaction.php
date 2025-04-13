@@ -31,8 +31,7 @@ class Transaction extends Model
 {
     
     use SoftDeletes;
-
-    /** 
+    /**
     * Database table name
     */
     protected $table = 'transactions';
