@@ -35,7 +35,7 @@ import moment from 'moment';
 import axios from 'axios';
 
 
-
+const selectedItem = ref(null);
 
 const form = useForm({
   // status:null,
@@ -109,6 +109,7 @@ const handleRowClick = (event, { item }) => {
 
   // Untuk update status form
   form.id = item.id;
+  selectedItem.value = item;
 }
 
 defineOptions({
@@ -537,7 +538,10 @@ const exportToPDF = async () => {
   }
 };
 
-const printBuktiTimbangan = (item) => {
+const printBuktiTimbangan = () => {
+if (!selectedItem.value) return;
+  const item = selectedItem.value;
+
   const printWindow = window.open('', '_blank');
   const netWeight = item.weight_in - (item.weight_out || 0);
   
@@ -773,12 +777,12 @@ const printBuktiTimbangan = (item) => {
                 </v-row>
 
                 <v-row class="mt-4">
-                  <v-col cols="6">
+                  <v-col cols="4">
                     <v-btn color="#303F9F" block prepend-icon="mdi-printer" @click="printData" variant="flat">
                       Print
                     </v-btn>
                   </v-col>
-                  <v-col cols="6">
+                  <v-col cols="8">
                     <v-btn color="#303F9F" block prepend-icon="mdi-content-save" @click="saveData" variant="flat">
                       {{ buttonLabel }}
                     </v-btn>
@@ -801,6 +805,17 @@ const printBuktiTimbangan = (item) => {
               <v-btn color="#800000" variant="flat" class="mr-2" @click="exportToPDF">
                 <v-icon left>mdi-file-pdf-box</v-icon>
                 Export PDF
+              </v-btn>
+
+              <v-btn 
+                color="indigo" 
+                variant="flat" 
+                class="mr-2" 
+                @click="printBuktiTimbangan"
+                :disabled="!selectedItem?.date_out"
+              >
+                <v-icon left>mdi-file-export</v-icon>
+                Print Bukti Timbang
               </v-btn>
 
               <!-- Tombol batal dan simpan tetap sama -->
@@ -830,15 +845,6 @@ const printBuktiTimbangan = (item) => {
               <template #[`item.action`]="{ item }">
                 <v-row dense>
                   <v-col>
-                    <v-btn 
-                        v-if="item.date_out"
-                        @click="printBuktiTimbangan(item)"
-                        variant="text" 
-                        color="info"
-                        class="ml-1"
-                      >
-                        <v-icon icon="mdi-printer" size="small"/>
-                      </v-btn>
 
                     <!-- Icon pensil atas (untuk edit) - hanya tampil jika date_out ADA -->
                     <!-- 

@@ -4,6 +4,113 @@ import Navbar from '@/Components/Navbar.vue';
 import Footer from '@/Components/Footer.vue';
 import { Head } from '@inertiajs/vue3';
 import moment from 'moment';
+
+const formatDate = (value) => {
+  return moment(value, 'YYYY-MM-DD').isValid() 
+    ? moment(value, 'YYYY-MM-DD').format('DD/MM/YYYY') 
+    : "-";
+};
+
+const formatTime = (value) => {
+  return moment(value, 'HH:mm:ss').isValid() 
+    ? moment(value, 'HH:mm:ss').format('HH:mm:ss') 
+    : "-";
+};
+
+const selectedItem = ref(null);
+
+const handleRowClick = (event, { item }) => {
+  selectedItem.value = item;
+}
+ const printBuktiTimbangan = () => {
+if (!selectedItem.value) return;
+  const item = selectedItem.value;
+
+  const printWindow = window.open('', '_blank');
+  const netWeight = item.weight_in - (item.weight_out || 0);
+  
+  const styles = `
+    <style>
+      body { font-family: Arial; margin: 15px; font-size: 14px; }
+      .header { text-align: center; margin-bottom: 20px; }
+      .info-section { margin: 15px 0; }
+      .info-line { margin: 8px 0; }
+      table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+      td, th { border: 1px solid #000; padding: 8px; }
+      .text-right { text-align: right; }
+      .signature-container { 
+        display: flex;
+        justify-content: space-between;
+        margin-top: 30px;
+      }
+    </style>
+  `;
+
+  const content = `
+    <h3 class="header">BUKTI TIMBANGAN</h3>
+
+    <div class="info-section">
+      <div class="info-line">
+        <strong>PENERIMA:</strong> ${item.customers_name || '-'}
+      </div>
+      <div class="info-line">
+        <strong>No. REF:</strong> ${item.ref_no || '-'} | 
+        <strong>TANGGAL:</strong> ${formatDate(item.date_in)} | 
+        <strong>JAM:</strong> ${formatTime(item.time_in)}
+      </div>
+      <div class="info-line">
+        <strong>NOPOL:</strong> ${item.police_no || '-'}
+      </div>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>MATERIAL</th>
+          <th class="text-right">BERAT MASUK</th>
+          <th class="text-right">BERAT KELUAR </th>
+          <th class="text-right">NET</th>
+          <th>REMARK</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>${item.materials_name || '-'}</td>
+          <td class="text-right">${Number(item.weight_in).toLocaleString()}</td>
+          <td class="text-right">${Number(item.weight_out).toLocaleString()}</td>
+          <td class="text-right">${netWeight.toLocaleString()}</td>
+          <td>${item.remark || '-'}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="signature-container">
+      <div>
+        Driver<br><br><br><br>
+        ( ${item.driver_name || '-'} )
+      </div>
+      <div>
+        Kepala Security<br><br><br><br>
+        ( Komandan Security )
+      </div>
+    </div>
+  `;
+
+  printWindow.document.write(`
+    <html>
+      <head>
+        <title>Bukti Timbangan - ${item.ref_no}</title>
+        ${styles}
+      </head>
+      <body>
+        ${content}
+      </body>
+    </html>
+  `);
+  
+  printWindow.document.close();
+  printWindow.print();
+};
 </script>
 
 <template>
@@ -115,21 +222,45 @@ import moment from 'moment';
         <!-- Action Bar -->
         <v-card class="mb-4" flat>
           <v-card-text class="pa-4">
-            <v-btn style="background-color: #303F9F;" @click="exportItems" color="white" variant="outlined"
-              prepend-icon="mdi-file-export" class="text-none" width="200px">
-              Export
-            </v-btn>
+              <v-btn color="success" variant="flat" class="mr-2" @click="exportToExcel">
+                <v-icon left>mdi-microsoft-excel</v-icon>
+                Export Excel
+              </v-btn>
 
-            <v-text-field class="mt-4" v-model="search" label="Search" append-inner-icon="mdi-magnify"
-              density="comfortable" style="max-width: 1200px;" single-line hide-details></v-text-field>
+              <v-btn color="#800000" variant="flat" class="mr-2" @click="printData">
+                <v-icon left>mdi-file-pdf-box</v-icon>
+                Export PDF
+              </v-btn>
 
-          </v-card-text>
+              <v-btn 
+                color="indigo" 
+                variant="flat" 
+                class="mr-2" 
+                @click="printBuktiTimbangan"
+                :disabled="!selectedItem?.date_out"
+              >
+                <v-icon left>mdi-file-export</v-icon>
+                Print Bukti Timbang
+              </v-btn>
+
+              <v-text-field 
+                class="mt-4" 
+                v-model="search" 
+                label="Search" 
+                append-inner-icon="mdi-magnify"
+                density="comfortable" 
+                style="max-width: 1200px;" 
+                single-line 
+                hide-details
+              ></v-text-field>
+            </v-card-text>
+
         </v-card>
 
         <!-- Data Table -->
         <v-card>
           <v-data-table-server v-model:options="options" :items="items" :items-length="totalItems" :headers="headers"
-            :search="search" class="elevation-0" :loading="isLoadingTable" @update:options="loadItems">
+            :search="search" class="elevation-0" :loading="isLoadingTable" @update:options="loadItems" @click:row="handleRowClick">
             <template v-slot:item.status="{ item }">
               <v-chip :color="item.status === 'Check out' ? 'green' : 'blue'" variant="flat">
                 {{ item.status }}
@@ -226,6 +357,132 @@ export default {
     this.queryCustomerSelections()//new
   },
   methods: {
+  formatDate(value) {
+      return moment(value, 'YYYY-MM-DD').isValid() 
+        ? moment(value, 'YYYY-MM-DD').format('DD/MM/YYYY') 
+        : "-";
+    },
+    
+    formatTime(value) {
+      return moment(value, 'HH:mm:ss').isValid() 
+        ? moment(value, 'HH:mm:ss').format('HH:mm:ss') 
+        : "-";
+    },
+  async loadExternalLibs() {
+    return new Promise((resolve) => {
+      if (window.XLSX) {
+        resolve();
+        return;
+      }
+
+      const script = document.createElement('script');
+      script.src = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
+      script.onload = resolve;
+      document.head.appendChild(script);
+    });
+  },
+
+  async exportToExcel() {
+    await this.loadExternalLibs();
+    
+    // Membuat worksheet dari data tabel
+    const wsData = [
+      this.headers.map(h => h.title), // Header
+      ...this.items.map(item =>
+        this.headers.map(header => {
+          const value = item[header.key];
+          // Handle nested objects atau array
+          return typeof value === 'object' ? JSON.stringify(value) : value;
+        })
+      )
+    ];
+
+    const ws = XLSX.utils.aoa_to_sheet(wsData);
+
+    // Membuat workbook
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Transactions");
+
+    // Export ke file XLSX
+    XLSX.writeFile(wb, `transactions-report-${moment().format('YYYYMMDD-HHmmss')}.xlsx`);
+  },
+
+  printData() {
+    const printWindow = window.open('', '_blank');
+    
+    // Style untuk print
+    const styles = `
+      <style>
+        body { font-family: Arial; margin: 20px; }
+        h1 { text-align: center; margin-bottom: 20px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .footer { text-align: center; margin-top: 20px; font-size: 12px; }
+      </style>
+    `;
+
+    // Konten tabel
+    let tableContent = `
+      <table>
+        <thead>
+          <tr>
+            ${this.headers.map(header => `<th>${header.title}</th>`).join('')}
+          </tr>
+        </thead>
+        <tbody>
+          ${this.items.map(item => `
+            <tr>
+              ${this.headers.map(header => {
+                const value = item[header.key];
+                let formattedValue = value;
+                
+                // Format khusus untuk kolom tertentu
+                if (header.key === 'date_in' || header.key === 'date_out') {
+                  formattedValue = this.formatDate(value);
+                } else if (header.key === 'time_in' || header.key === 'time_out') {
+                  formattedValue = this.formatTime(value);
+                } else if (header.key === 'status') {
+                  formattedValue = value === 'Check Out' ? '✅ Check Out' : '⏳ Check In';
+                }
+                
+                return `<td>${formattedValue || ''}</td>`;
+              }).join('')}
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    `;
+
+    // Gabungkan semua konten
+    printWindow.document.write(`
+      <html>
+        <head>
+          <title>Transaction Report</title>
+          ${styles}
+        </head>
+        <body>
+          <h1>Transaction Report</h1>
+          ${tableContent}
+          <div class="footer">
+            Printed on: ${moment().format('YYYY-MM-DD HH:mm:ss')}<br>
+            Filter: ${this.getCurrentFilters()}
+          </div>
+        </body>
+      </html>
+    `);
+
+    printWindow.document.close();
+    printWindow.print();
+  },
+
+  getCurrentFilters() {
+    return Object.entries(this.filters)
+      .filter(([_, value]) => value)
+      .map(([key, value]) => `${key}: ${value}`)
+      .join(', ');
+  },
+
     loadItems() {
       this.isLoadingTable = true
       const { page, itemsPerPage, sortBy, search } = this.options
@@ -270,12 +527,6 @@ export default {
       // Filter implementation
       console.log('Filters applied:', this.filters);
       this.loadItems();
-    },
-    formatDate(value) {
-      return moment(value, 'YYYY-MM-DD').isValid() ? moment(value, 'YYYY-MM-DD').format('DD/MM/YYYY') : "-";
-    },
-    formatTime(value) {
-      return moment(value, 'hh:mm:ss').isValid() ? moment(value, 'hh:mm:ss').format('hh:mm:ss') : "-";
     },
     queryMaterialSelections(search) {//new
       this.loading_material = true
