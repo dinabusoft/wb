@@ -3,6 +3,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 import { Head, Link, useForm, router } from '@inertiajs/vue3'
 import { ref } from 'vue';
 import Navbar from '@/Components/Navbar.vue';
+import Footer from '@/Components/Footer.vue';
 
 const props = defineProps({
     data: {
@@ -87,6 +88,8 @@ const submit = () => {
     </v-card>
       </v-container>
     </v-main>
+  
+    <Footer />
   </v-app>
 </template>
 

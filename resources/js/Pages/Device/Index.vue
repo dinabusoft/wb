@@ -3,6 +3,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 import { Head, Link, router } from '@inertiajs/vue3'
 import { ref } from 'vue';
 import Navbar from '@/Components/Navbar.vue';
+import Footer from '@/Components/Footer.vue';
 </script>
 
 <template>
@@ -76,6 +77,8 @@ import Navbar from '@/Components/Navbar.vue';
           </v-row>
       </v-container>
     </v-main>
+  
+    <Footer />
   </v-app>
 </template>
 

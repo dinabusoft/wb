@@ -2,6 +2,7 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 import { Head, Link, useForm, router } from '@inertiajs/vue3'
 import Navbar from '@/Components/Navbar.vue';
+import Footer from '@/Components/Footer.vue';
 
 const props = defineProps({
     data: {
@@ -52,11 +53,11 @@ const submit = () => {
                                 :error-messages="form.errors.email" />
                         </v-col>
                         <v-col cols="12" sm="12" md="6">
-                            <v-text-field v-model="form.password" label="Password" variant="outlined"
+                            <v-text-field v-model="form.password" label="Password" variant="outlined" type="password"
                                 :error-messages="form.errors.password" />
                          </v-col>
                          <v-col cols="12" sm="12" md="6">
-                            <v-text-field v-model="form.password_confirmation" label="Confirm Password"
+                            <v-text-field v-model="form.password_confirmation" label="Confirm Password" type="password"
                                 variant="outlined" :error-messages="form.errors.password_confirmation" />
                         </v-col>
                         <v-col cols="12" sm="12" md="6">
@@ -75,6 +76,8 @@ const submit = () => {
         </v-card>
     </v-container>
     </v-main>
+  
+    <Footer />
   </v-app>
 </template>
 

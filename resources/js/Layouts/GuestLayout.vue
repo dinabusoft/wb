@@ -28,10 +28,10 @@ import { Link } from '@inertiajs/vue3';
             <div
                 class="mt-0 w-full overflow-hidden bg-white px-6 py-4 shadow-md sm:max-w-md sm:rounded-lg"
             >
+            <h4 class="text-center text-purple-800" style="font-size: 2rem;font-weight: bold; font-style: oblique; font-family: Helvetica;">Weight Bridge Application</h4>
             <div class="col-lg-6 d-flex align-items-center gradient-custom-2">
-            <img src="https://img.freepik.com/free-vector/code-typing-concept-illustration_114360-4296.jpg?t=st=1743652045~exp=1743655645~hmac=507bab7624f10d770d5abfe8cdf3ce84edc8055749397749061d4dd8b276c252&w=826"
-            alt="Login image" class="w-100 vh-100" style="object-fit: cover; object-position: left;">
-            
+                <img src="https://img.freepik.com/free-vector/code-typing-concept-illustration_114360-4296.jpg?t=st=1743652045~exp=1743655645~hmac=507bab7624f10d770d5abfe8cdf3ce84edc8055749397749061d4dd8b276c252&w=826"
+                    style="width: 350px; height: 300px;" alt="logo">
             </div>
             <div class="rounded-md text-sm">
                 <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px; font-size: 2.5rem;font-weight: bold;">Welcome back</h5> 

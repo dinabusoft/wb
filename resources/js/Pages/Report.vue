@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import Navbar from '@/Components/Navbar.vue';
+import Footer from '@/Components/Footer.vue';
 import { Head } from '@inertiajs/vue3';
 import moment from 'moment';
 </script>
@@ -156,6 +157,8 @@ import moment from 'moment';
         </v-card>
       </v-container>
     </v-main>
+  
+    <Footer />
   </v-app>
 </template>
 

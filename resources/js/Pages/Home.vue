@@ -29,6 +29,7 @@
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue';
 import Navbar from '@/Components/Navbar.vue';
+import Footer from '@/Components/Footer.vue';
 import { Head, Link, useForm, router, usePage } from '@inertiajs/vue3'
 import moment from 'moment';
 import axios from 'axios';
@@ -207,7 +208,7 @@ const loadItems = async () => {
 const loadData = async (item) => {
   try {
     const response = await axios.get(`/transactions/${item.id}/out`);
-    console.log(response.data);
+    
     // Jika perlu mengisi form:
     // form.id = response.data.id;
     // form.ref_no = response.data.ref_no;
@@ -301,7 +302,6 @@ function saveData() {
       onSuccess: () => {
         //    alert('Data saved!');
         window.location.reload();
-        console.log('Submitting:', form.data());
       },
     })
 
@@ -311,13 +311,6 @@ const handleSaveOut = async (item) => {
   try {
     const currentTime = moment().format('HH:mm:ss');
     const currentDate = moment().format('YYYY-MM-DD');
-
-    console.log('Sending saveOut data:', {
-      weight_out: form.weight,
-      date_out: currentDate,
-      time_out: currentTime,
-      id: item.id
-    });
 
     const response = await axios.put(`/transactions/${item.id}/out`, {
       weight_out: form.weight,
@@ -544,6 +537,92 @@ const exportToPDF = async () => {
   }
 };
 
+const printBuktiTimbangan = (item) => {
+  const printWindow = window.open('', '_blank');
+  const netWeight = item.weight_in - (item.weight_out || 0);
+  
+  const styles = `
+    <style>
+      body { font-family: Arial; margin: 15px; font-size: 14px; }
+      .header { text-align: center; margin-bottom: 20px; }
+      .info-section { margin: 15px 0; }
+      .info-line { margin: 8px 0; }
+      table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+      td, th { border: 1px solid #000; padding: 8px; }
+      .text-right { text-align: right; }
+      .signature-container { 
+        display: flex;
+        justify-content: space-between;
+        margin-top: 30px;
+      }
+    </style>
+  `;
+
+  const content = `
+    <h3 class="header">BUKTI TIMBANGAN</h3>
+
+    <div class="info-section">
+      <div class="info-line">
+        <strong>PENERIMA:</strong> ${item.customers_name || '-'}
+      </div>
+      <div class="info-line">
+        <strong>No. REF:</strong> ${item.ref_no || '-'} | 
+        <strong>TANGGAL:</strong> ${formatDate(item.date_in)} | 
+        <strong>JAM:</strong> ${formatTime(item.time_in)}
+      </div>
+      <div class="info-line">
+        <strong>NOPOL:</strong> ${item.police_no || '-'}
+      </div>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>MATERIAL</th>
+          <th class="text-right">BERAT MASUK</th>
+          <th class="text-right">BERAT KELUAR </th>
+          <th class="text-right">NET</th>
+          <th>REMARK</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>${item.materials_name || '-'}</td>
+          <td class="text-right">${Number(item.weight_in).toLocaleString()}</td>
+          <td class="text-right">${Number(item.weight_out).toLocaleString()}</td>
+          <td class="text-right">${netWeight.toLocaleString()}</td>
+          <td>${item.remark || '-'}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="signature-container">
+      <div>
+        Driver<br><br><br><br>
+        ( ${item.driver_name || '-'} )
+      </div>
+      <div>
+        Kepala Security<br><br><br><br>
+        ( Komandan Security )
+      </div>
+    </div>
+  `;
+
+  printWindow.document.write(`
+    <html>
+      <head>
+        <title>Bukti Timbangan - ${item.ref_no}</title>
+        ${styles}
+      </head>
+      <body>
+        ${content}
+      </body>
+    </html>
+  `);
+  
+  printWindow.document.close();
+  printWindow.print();
+};
 </script>
 
 <template>
@@ -719,7 +798,7 @@ const exportToPDF = async () => {
                 Export Excel
               </v-btn>
 
-              <v-btn color="error" variant="flat" class="mr-2" @click="exportToPDF">
+              <v-btn color="#800000" variant="flat" class="mr-2" @click="exportToPDF">
                 <v-icon left>mdi-file-pdf-box</v-icon>
                 Export PDF
               </v-btn>
@@ -751,8 +830,19 @@ const exportToPDF = async () => {
               <template #[`item.action`]="{ item }">
                 <v-row dense>
                   <v-col>
+                    <v-btn 
+                        v-if="item.date_out"
+                        @click="printBuktiTimbangan(item)"
+                        variant="text" 
+                        color="info"
+                        class="ml-1"
+                      >
+                        <v-icon icon="mdi-printer" size="small"/>
+                      </v-btn>
+
                     <!-- Icon pensil atas (untuk edit) - hanya tampil jika date_out ADA -->
-                    <!-- <v-btn 
+                    <!-- 
+                    <v-btn 
                 v-if="item.date_out"
                 :href="`/transactions/${item.id}/edit`"
                 variant="text" 
@@ -783,5 +873,6 @@ const exportToPDF = async () => {
         </v-row>
       </v-container>
     </v-main>
+    <Footer />
   </v-app>
 </template>

@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import Navbar from '@/Components/Navbar.vue';
+import Footer from '@/Components/Footer.vue';
 import { Head } from '@inertiajs/vue3';
 
 const dbSettings = ref({
@@ -266,6 +267,8 @@ function saveSettings() {
         </v-card>
       </v-container>
     </v-main>
+  
+    <Footer />
   </v-app>
 </template>
 

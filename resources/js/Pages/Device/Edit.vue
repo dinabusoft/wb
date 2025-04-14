@@ -1,6 +1,7 @@
 <script setup>
 import Navbar from '@/Components/Navbar.vue';
 import { Head, Link, useForm, router } from '@inertiajs/vue3'
+import Footer from '@/Components/Footer.vue';
 
 const props = defineProps({
     data: {
@@ -125,7 +126,9 @@ const submit = () => {
                 </v-card>
             </v-container>
         </v-main>
-    </v-app>
+    
+    <Footer />
+  </v-app>
 </template>
 
 <script>
