@@ -185,7 +185,7 @@ const loadItems = async () => {
     limit: itemsPerPage,
     sort: sortBy[0]?.key || null,
     order: sortBy[0]?.order || null,
-    filter: { status: 'Check In' },
+    filter: { isMenuHome: true },
     ...(search.value && { search: search.value })
   };
 

@@ -13,7 +13,6 @@ class TransactionExport implements FromCollection, WithHeadings, WithMapping, Wi
 {
     public function collection()
     {
-        print_r(Transaction::all()); die;
         return Transaction::all();
     }
 

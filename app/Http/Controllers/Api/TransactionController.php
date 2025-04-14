@@ -35,7 +35,23 @@ class TransactionController extends ApiController
                             $search = strtolower(trim($search));
                             return $query->where('master_customers.name', 'like',  '%' . $search . '%');
                         });
-            })->orderBy('date_in', 'desc')->orderBy('time_in', 'desc');
+                    })->when($request->get('filter'), function ($query, $filters) {
+                        foreach ($filters as $field => $value) {
+                            if (!empty($value)) {
+                                if($field == 'date_in_begin') $query->where('date_in','>=', $value);
+                                elseif($field == 'date_in_end') $query->where('date_in','<=', $value);
+                                elseif($field == 'status' && $value=='All Status' ) continue;
+                                elseif($field == 'status' && $value=='Check In' ) $query->whereNull('date_out');
+                                elseif($field == 'status' && $value=='Check Out' ) $query->whereNotNull('date_out');
+                                elseif($field == 'isMenuHome') $query->whereNull('date_out')->orWhereRaw('Date(date_in) = CURDATE()')->orWhereRaw('Date(date_out) = CURDATE()');
+                                elseif($value!=0 )$query->where($field, $value);
+                            }
+                        }
+                        return $query;
+                    })->when($request->get('sort'), function ($query, $sortBy) {
+                        if($sortBy['key']=='ticket_id') $sortBy['key'] = 'id';
+                        return $query->orderBy($sortBy['key'], $sortBy['order']);
+                    })->orderBy('date_in', 'desc')->orderBy('time_in', 'desc');
 
             $data = $query->paginate($request->get('limit', 10));
 
