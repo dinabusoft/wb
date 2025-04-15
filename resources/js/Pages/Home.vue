@@ -627,6 +627,33 @@ if (!selectedItem.value) return;
   printWindow.document.close();
   printWindow.print();
 };
+
+// Membuat tombol connect serial
+const messages = ref([])
+
+async function connectSerial() {
+  if ('serial' in navigator) {
+    try {
+      const port = await navigator.serial.requestPort()
+      await port.open({ baudRate: 9600 })
+
+      const decoder = new TextDecoderStream()
+      const readableStreamClosed = port.readable.pipeTo(decoder.writable)
+      const reader = decoder.readable.getReader()
+
+      while (true) {
+        const { value, done } = await reader.read()
+        if (done) break
+        if (value) messages.value.push(value.trim())
+      }
+    } catch (e) {
+      console.error('Error:', e)
+    }
+  } else {
+    alert('Web Serial API tidak didukung di browser ini.')
+  }
+}
+
 </script>
 
 <template>
@@ -652,6 +679,14 @@ if (!selectedItem.value) return;
             </v-sheet>
           </v-col>
         </v-row>
+        
+        <v-btn class="pa-2 ma-2 mb-0" color="#303F9F" @click="connectSerial">
+          <v-icon left>mdi-connection</v-icon>
+          Connect Serial</v-btn>
+          <v-card-text>
+            <div v-for="(line, index) in messages" :key="index">{{ line }}</div>
+          </v-card-text>
+
         <v-row justify="center">
           <v-col cols="3">
             <v-sheet class="pa-2 ma-2" :elevation="4" border color="#303F9F2E" rounded>

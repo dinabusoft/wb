@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, onUnmounted, nextTick } from 'vue';
 import Navbar from '@/Components/Navbar.vue';
 import Footer from '@/Components/Footer.vue';
 import { Head } from '@inertiajs/vue3';
@@ -35,6 +35,43 @@ function saveSettings() {
   // Implement save functionality
   alert('Settings saved successfully!');
 }
+
+const terminalOutput = ref('Terminal ready...\n');
+const isPortOpen = ref(false);
+const intervalId = ref(null);
+const terminalElement = ref(null);
+
+function togglePort() {
+  isPortOpen.value = !isPortOpen.value;
+  if (isPortOpen.value) {
+    // Simulasi buka port dan mulai baca data
+    terminalOutput.value += 'Open port... OK\nMenerima data berat:\n';
+    
+   intervalId.value = setInterval(async () => {
+  const berat = (Math.random() * 1000).toFixed(2);
+  const waktu = new Date().toLocaleTimeString();
+  terminalOutput.value += `[${waktu}] Berat: ${berat} ${generalSettings.value.unit}\n`;
+  
+  await nextTick();
+  const textarea = terminalElement.value.$el.querySelector('textarea');
+  if (textarea) {
+    textarea.scrollTop = textarea.scrollHeight;
+  }
+}, 1000);
+  } else {
+    // Tutup port dan hentikan pembacaan
+    terminalOutput.value += 'Close port...\n';
+    clearInterval(intervalId.value);
+    intervalId.value = null;
+  }
+}
+
+onUnmounted(() => {
+  if (intervalId.value) {
+    clearInterval(intervalId.value);
+  }
+});
+
 </script>
 
 <template>
@@ -229,27 +266,33 @@ function saveSettings() {
           </v-card-text>
 
           <!-- Terminal Section -->
-          <v-card-title class="bg-grey-lighten-3 px-4 py-3">
+           <v-card-title class="bg-grey-lighten-3 px-4 py-3">
             <v-icon icon="mdi-console" class="mr-2" color="#303F9F"></v-icon>
             <span style="color: #303F9F;">TERMINAL</span>
           </v-card-title>
           <v-card-text class="pa-4">
-            <v-textarea class="bg-black"
-              label="Terminal Output"
-              variant="outlined"
-              rows="3"
-              readonly
-              value="Serial port initialized..."
-            ></v-textarea>
-            <v-btn
-              color="#303F9F"
-              variant="flat"
-              class="mt-2 text-none"
-            >
-            <v-icon left>mdi-share-variant</v-icon>
-              OPEN PORT
-            </v-btn>
-          </v-card-text>
+              <v-textarea
+                id="terminal-output"
+                ref="terminalElement"
+                class="terminal-style"
+                variant="outlined"
+                rows="3"
+                readonly
+                v-model="terminalOutput"
+                no-resize
+                hide-details
+                style="height: 150px;"
+              ></v-textarea>
+              <v-btn
+                color="#303F9F"
+                variant="flat"
+                class="mt-2 text-none"
+                @click="togglePort"
+              >
+                <v-icon left>{{ isPortOpen ? 'mdi-close' : 'mdi-share-variant' }}</v-icon>
+                {{ isPortOpen ? 'CLOSE PORT' : 'OPEN PORT' }}
+              </v-btn>
+            </v-card-text>
 
           <!-- Save Button -->
           <v-card-actions class="justify-end pa-4">
@@ -287,4 +330,39 @@ function saveSettings() {
 .v-text-field, .v-select, .v-textarea {
   background-color: #fff;
 }
+.bg-black {
+  background-color: #000 !important;
+}
+
+.bg-black :deep(.v-field__input) {
+  color: #00ff00 !important; /* Text color*/
+  font-family: monospace !important; /* Font monospace */
+  font-size: 0.9em;
+  caret-color: transparent; /* Sembunyikan kursor */
+}
+
+.bg-black :deep(.v-field__field) {
+  background-color: #000; /* Latar hitam */
+}
+
+.terminal-style :deep(.v-field__input) {
+  color: #00ff00 !important;
+  font-family: 'Courier New', monospace !important;
+  font-size: 0.9em;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  overflow-anchor: none; /* Tambahkan ini */
+}
+
+.terminal-style :deep(.v-field__field) {
+  background-color: #000 !important;
+  padding: 12px !important;
+  max-height: 150px; /* Tambahkan ini */
+  overflow-y: auto !important;
+}
+
+.terminal-style :deep(textarea) {
+  scroll-behavior: smooth !important; /* Animasi scroll halus */
+}
+
 </style>
