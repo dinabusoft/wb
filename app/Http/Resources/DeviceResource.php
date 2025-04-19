@@ -36,7 +36,7 @@ class DeviceResource extends JsonResource
 			"updated_by_name" => $this->updated_actor?->name,
 			"deleted_by_name" => $this->deleted_actor?->name,
 			"user_id" => $this->user_id,
-			"user_name" => $this->user_id?->name,
+			"user_name" => $this->user?$this->user->name:"Default",
 
         ];
     }

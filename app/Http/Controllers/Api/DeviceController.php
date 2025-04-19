@@ -136,5 +136,50 @@ class DeviceController extends ApiController
          }
      }
 
+     //list tabel
+     public function indexMydevice(Request $request)
+     {
+        $user_id = $request->user()->id;
+        $data = Device::whereRaw('status LIKE ? and (user_id is null or user_id LIKE ?)', ["1","%$user_id%"])
+         ->orderBy('user_id', "desc")
+         ->get();
+ 
+        return DeviceResource::collection($data)->response()->getData(true);
+     }
+
+     public function saveMyDevice(DeviceRequest $request,  Device $device)
+     {
+         $data = $request->validated();
+         $data['status'] = 1;
+         $data['updated_by'] = $request->user()->id;
+         if($device->user_id>0 && !empty($device)){
+            $data['updated_by'] = $request->user()->id;
+            $device->fill($data);
+         }else{
+            $data['created_by'] = $request->user()->id;
+            $data['user_id'] = $request->user()->id;
+            $device=new Device;
+            $device->fill($data);
+         }
+         if ($device->save()) {
+             $message = sprintf('Successfully save %s', $device->name);
+             return response()->json([
+                 'message' => ['show' => true, 
+                              'message' => $message,
+                              'color' => 'info'
+             ],
+             'data' => $device
+             ]);
+         } else {
+              $message = 'Error server internal occurred while saving Devices. Please try again later';
+              return response()->json([
+                 'message' => ['show' => true, 
+                              'message' => $message,
+                              'color' => 'error'
+              ],
+              'data' => $device
+             ]);
+         }
+     }
 
 }

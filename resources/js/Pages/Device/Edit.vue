@@ -56,9 +56,9 @@ const submit = () => {
                                         :error-messages="form.errors.name" />
                                 </v-col>
                                 <v-col cols="12" sm="12" md="6">
-                                    <v-select v-model="form.port" label="Port" :items="['1', '2', '3', '4']"
+                                    <v-text-field v-model="form.port" label="Port" type="number" prefix="COM"
                                         variant="outlined" density="comfortable"
-                                        :error-messages="form.errors.port"></v-select>
+                                        :error-messages="form.errors.port"></v-text-field>
                                 </v-col>
                                 <v-col cols="12" sm="12" md="6">
                                     <v-select v-model="form.baudrate" label="Baudrate"

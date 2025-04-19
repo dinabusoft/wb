@@ -95,6 +95,7 @@ export default {
     return {
       headers: [
         { title: 'Name', key: 'name' },
+        { title: 'User', key: 'user_name' },
         { title: 'Port', key: 'port' },
         { title: 'Baudrate', key: 'baudrate' },
         { title: 'Databits', key: 'databits' },

@@ -39,6 +39,7 @@ const selectedItem = ref(null);
 
 const form = useForm({
   // status:null,
+  id: null,
   date: moment().format('YYYY-MM-DD'),
   time: moment().format('HH:mm:ss'),
   weight: '178',
@@ -209,7 +210,7 @@ const loadItems = async () => {
 const loadData = async (item) => {
   try {
     const response = await axios.get(`/transactions/${item.id}/out`);
-    
+
     // Jika perlu mengisi form:
     // form.id = response.data.id;
     // form.ref_no = response.data.ref_no;
@@ -539,12 +540,12 @@ const exportToPDF = async () => {
 };
 
 const printBuktiTimbangan = () => {
-if (!selectedItem.value) return;
+  if (!selectedItem.value) return;
   const item = selectedItem.value;
 
   const printWindow = window.open('', '_blank');
   const netWeight = item.weight_in - (item.weight_out || 0);
-  
+
   const styles = `
     <style>
       body { font-family: Arial; margin: 15px; font-size: 14px; }
@@ -623,7 +624,7 @@ if (!selectedItem.value) return;
       </body>
     </html>
   `);
-  
+
   printWindow.document.close();
   printWindow.print();
 };
@@ -651,7 +652,7 @@ async function connectSerial() {
     }
   } else {
     alert('Web Serial API tidak didukung di browser ini.')
-  }
+  }
 }
 
 </script>
@@ -679,13 +680,13 @@ async function connectSerial() {
             </v-sheet>
           </v-col>
         </v-row>
-        
+
         <v-btn class="pa-2 ma-2 mb-0" color="#303F9F" @click="connectSerial">
           <v-icon left>mdi-connection</v-icon>
           Connect Serial</v-btn>
-          <v-card-text>
-            <div v-for="(line, index) in messages" :key="index">{{ line }}</div>
-          </v-card-text>
+        <v-card-text>
+          <div v-for="(line, index) in messages" :key="index">{{ line }}</div>
+        </v-card-text>
 
         <v-row justify="center">
           <v-col cols="3">
@@ -693,7 +694,17 @@ async function connectSerial() {
 
               <v-form class="pa-2">
                 <v-row dense>
-                  <input type="hidden" name="_token" :value="$page.props.csrf_token">
+                  <v-col cols="8">
+                  </v-col>
+                  <v-col cols="4">
+                    <v-btn color="indigo" block variant="flat" @click="form.reset()">
+                      <v-icon left>mdi-eraser-variant</v-icon>
+                      <p class="text-wrap ma-auto">Clear</p>
+                    </v-btn>
+                  </v-col>
+                </v-row>
+                <v-row dense>
+                  <!--<input type="hidden" name="_token" :value="$page.props.csrf_token">-->
                   <!-- Enabled Fields -->
                   <v-col cols="4" class="d-flex align-center">
                     <span class="font-bold text-gray-900">Status</span>
@@ -812,14 +823,16 @@ async function connectSerial() {
                 </v-row>
 
                 <v-row class="mt-4">
-                  <v-col cols="4">
-                    <v-btn color="#303F9F" block prepend-icon="mdi-printer" @click="printData" variant="flat">
-                      Print
+                  <v-col cols="6">
+                    <v-btn color="indigo" block variant="flat" @click="printBuktiTimbangan"
+                      :disabled="!selectedItem?.date_out">
+                      <v-icon left>mdi-file-export</v-icon>
+                      <p class="text-wrap ma-auto">Print Bukti Timbang</p>
                     </v-btn>
                   </v-col>
-                  <v-col cols="8">
+                  <v-col cols="6">
                     <v-btn color="#303F9F" block prepend-icon="mdi-content-save" @click="saveData" variant="flat">
-                      {{ buttonLabel }}
+                      <p class="text-wrap ma-auto">{{ buttonLabel }}</p>
                     </v-btn>
                   </v-col>
                 </v-row>
@@ -841,18 +854,9 @@ async function connectSerial() {
                 <v-icon left>mdi-file-pdf-box</v-icon>
                 Export PDF
               </v-btn>
-
-              <v-btn 
-                color="indigo" 
-                variant="flat" 
-                class="mr-2" 
-                @click="printBuktiTimbangan"
-                :disabled="!selectedItem?.date_out"
-              >
-                <v-icon left>mdi-file-export</v-icon>
-                Print Bukti Timbang
+              <v-btn color="#303F9F" prepend-icon="mdi-printer" @click="printData" variant="flat">
+                Print
               </v-btn>
-
               <!-- Tombol batal dan simpan tetap sama -->
             </v-card-actions>
             <!-- <DataTable @load-data="handleLoadData"/> -->

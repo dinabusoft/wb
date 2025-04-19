@@ -43,11 +43,13 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/master_materials/options', [MasterMaterialController::class, 'getOptions']);
     Route::get('/master_customers/options', [MasterCustomerController::class, 'getOptions']);
-    Route::get('transactions/{transaction}/out',[TransactionController::class, 'showOut']);
     Route::put('/transactions/{transaction}/out', [TransactionController::class, 'saveOut'])->name('transactions.out');
     Route::post('/transactions/in',[TransactionController::class, 'storeCheckIn']);
+    Route::get('/devices-setting',[DeviceController::class, 'indexMydevice']);
+    Route::post('/devices/{device}/setting-save',[DeviceController::class, 'saveMydevice']);
+    //Route::get('/transactions/{transaction}/out',[TransactionController::class, 'showOut']);
     //Route::resource('usersroles',UsersRoleController::class);
-    Route::get('/transactions-export',[TransactionController::class, 'export']);
+    //Route::get('/transactions-export',[TransactionController::class, 'export']);
 });
     Route::get('/home', function () {
     return Inertia::render('Home');
@@ -61,15 +63,7 @@ Route::middleware('auth')->group(function () {
      Route::get('/setting', function () {
     return Inertia::render('Setting');
 })->name('setting');
-     Route::get('/admin-user', function () {
-    return Inertia::render('Administrasi/User');
-})->name('admin-user');
-     Route::get('/admin-customer', function () {
-    return Inertia::render('MasterCustomer/Index');
-})->name('admin-customer');
-     Route::get('/admin-material', function () {
-    return Inertia::render('MasterMaterial/Index');
-})->name('admin-material');
+
 
 
 // Route::get('/forgot-password', function () {

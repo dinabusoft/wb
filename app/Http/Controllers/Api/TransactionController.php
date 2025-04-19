@@ -259,7 +259,7 @@ class TransactionController extends ApiController
         }
     }
 
-
+/*
      //get single data
      public function showOut(Transaction $transaction)
      {
@@ -267,11 +267,12 @@ class TransactionController extends ApiController
          'data' => $transaction
        ]);
      }
-
+*/
+/*
     public function export(Request $request)
     {
         //return Excel::download(new TransactionExport, 'weight_bridge.xlsx', \Maatwebsite\Excel\Excel::XLSX);
         return Excel::download(new TransactionExport, 'weight_bridge.xlsx', \Maatwebsite\Excel\Excel::CSV);
     }
-
+*/
 }

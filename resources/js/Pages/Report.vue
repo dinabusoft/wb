@@ -567,6 +567,7 @@ export default {
       })
       this.loading_customer = false
     },
+    /*
     exportItems: async function () {
       this.isLoadingTable = true
       var params = {
@@ -615,7 +616,7 @@ export default {
         this.notif.color = 'error'
         this.isLoadingTable = false
       }
-    },
+    },*/
   }
 }
 </script>
