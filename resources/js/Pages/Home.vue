@@ -444,98 +444,158 @@ const loadExternalLibs = () => {
     });
   });
 };
-
+const filters = ref({
+  date_in_begin: '',
+  date_in_end: '',
+  customers_id: '',
+  materials_id: '',
+  police_no: '',
+  status: ''
+});
 const exportToExcel = async () => {
   await loadExternalLibs();
 
-  // Membuat worksheet dari data tabel
-  const wsData = [
-    headers.value.map(h => h.title), // Header
-    ...items.value.map(item =>
-      headers.value.map(header => {
-        const value = item[header.key];
-        // Handle nested objects atau array
-        return typeof value === 'object' ? JSON.stringify(value) : value;
-      })
-    )
-  ];
+  try {
+    // Ambil semua data dengan filter saat ini
+    const params = {
+      filter: {
+      isMenuHome: true,
+        ...filters.value,
+        status: filters.value.status === 'All Status' ? null : filters.value.status
+      },
+      search: search.value, // Tambahkan parameter pencarian
+      sort: options.value.sortBy[0]?.key || null, // Tambahkan sort
+      order: options.value.sortBy[0]?.order || null,
+      limit: 'all'
+    };
 
-  const ws = XLSX.utils.aoa_to_sheet(wsData);
+    const response = await axios.get('/transactions', { params });
+    const allData = response.data.data;
 
-  // Styling untuk header
-  ws['!cols'] = headers.value.map(() => ({ width: 20 }));
+    // Format data untuk Excel
+    const wsData = [
+      headers.value.map(h => h.title),
+      ...allData.map(item =>
+        headers.value.map(header => {
+          const value = item[header.key];
+          // Format tanggal dan waktu
+          if (['date_in', 'date_out'].includes(header.key)) {
+            return formatDate(value);
+          } else if (['time_in', 'time_out'].includes(header.key)) {
+            return formatTime(value);
+          }
+          return typeof value === 'object' ? JSON.stringify(value) : value;
+        })
+      )
+    ];
 
-  // Membuat workbook
-  const wb = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb, ws, "Transactions");
+    // Buat file Excel
+    const ws = XLSX.utils.aoa_to_sheet(wsData);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Transactions");
+    XLSX.writeFile(wb, `transactions-${moment().format('YYYYMMDD-HHmmss')}.xlsx`);
 
-  // Export ke file XLSX
-  XLSX.writeFile(wb, `transactions-${moment().format('YYYYMMDD-HHmmss')}.xlsx`);
+  } catch (error) {
+    console.error('Export error:', error);
+    // Tambahkan notifikasi error jika perlu
+  }
 };
 const exportToPDF = async () => {
-  await loadExternalLibs(); // Pastikan library sudah terload
-
-  const pdfContent = document.createElement('div');
-  pdfContent.style.padding = '20px';
-  pdfContent.style.fontFamily = 'Arial';
-
-  // Membuat tabel HTML untuk PDF
-  const table = document.createElement('table');
-  table.style.borderCollapse = 'collapse';
-  table.style.width = '100%';
-
-  // Header
-  const thead = document.createElement('thead');
-  const headerRow = document.createElement('tr');
-  headers.value.forEach(header => {
-    const th = document.createElement('th');
-    th.textContent = header.title;
-    th.style.border = '1px solid #000';
-    th.style.padding = '8px';
-    th.style.backgroundColor = '#f0f0f0';
-    headerRow.appendChild(th);
-  });
-  thead.appendChild(headerRow);
-  table.appendChild(thead);
-
-  // Body
-  const tbody = document.createElement('tbody');
-  items.value.forEach(item => {
-    const row = document.createElement('tr');
-    headers.value.forEach(header => {
-      const td = document.createElement('td');
-      const value = item[header.key];
-      td.textContent = typeof value === 'object' ? JSON.stringify(value) : value;
-      td.style.border = '1px solid #000';
-      td.style.padding = '6px';
-      row.appendChild(td);
-    });
-    tbody.appendChild(row);
-  });
-  table.appendChild(tbody);
-
-  pdfContent.innerHTML = `
-    <h2 style="color: #303F9F; text-align: center;">Laporan Transaksi</h2>
-    <p style="text-align: right;">Tanggal Export: ${moment().format('DD/MM/YYYY HH:mm')}</p> `;
-  pdfContent.appendChild(table);
-
-  document.body.appendChild(pdfContent);
+   await loadExternalLibs();
 
   try {
-    const canvas = await html2canvas(pdfContent);
-    const imgData = canvas.toDataURL('image/png');
+    const params = {
+      filter: {
+        isMenuHome: true,
+        ...filters.value,
+        status: filters.value.status === 'All Status' ? null : filters.value.status
+      },
+      search: search.value,
+      sort: options.value.sortBy[0]?.key || null,
+      order: options.value.sortBy[0]?.order || null,
+      limit: 'all'
+    };
 
-    const pdf = new window.jspdf.jsPDF('landscape');
-    const imgProps = pdf.getImageProperties(imgData);
-    const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+    const response = await axios.get('/transactions', { params });
+    const allData = response.data.data;
 
-    pdf.addImage(imgData, 'PNG', 10, 10, pdfWidth - 20, pdfHeight - 20);
-    pdf.save(`transactions-${moment().format('YYYYMMDD-HHmmss')}.pdf`);
+    // Buka window baru
+    const printWindow = window.open('', '_blank');
+    
+    // Buat konten PDF di window baru
+    printWindow.document.write(`
+      <html>
+        <head>
+          <title>Laporan Transaksi</title>
+          <style>
+            body { font-family: Arial; margin: 20px; }
+            h2 { color: #303F9F; text-align: center; }
+            table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+            th, td { border: 1px solid #000; padding: 8px; text-align: left; }
+            th { background-color: #f0f0f0; }
+            .footer { text-align: center; margin-top: 20px; font-size: 12px; }
+          </style>
+        </head>
+        <body>
+          <h2>Laporan Transaksi</h2>
+          <p style="text-align: right;">Tanggal Export: ${moment().format('DD/MM/YYYY HH:mm')}</p>
+          <table>
+            <thead>
+              <tr>
+                ${headers.value.map(header => `<th>${header.title}</th>`).join('')}
+              </tr>
+            </thead>
+            <tbody>
+              ${allData.map(item => `
+                <tr>
+                  ${headers.value.map(header => {
+                    const value = item[header.key];
+                    let displayValue = value;
+                    if (['date_in', 'date_out'].includes(header.key)) {
+                      displayValue = formatDate(value);
+                    } else if (['time_in', 'time_out'].includes(header.key)) {
+                      displayValue = formatTime(value);
+                    }
+                    return `<td>${displayValue || '-'}</td>`;
+                  }).join('')}
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </body>
+      </html>
+    `);
+
+    printWindow.document.close();
+    
+    // Tunggu konten selesai loading
+    setTimeout(async () => {
+      // Ambil element body dari window baru
+      const pdfContent = printWindow.document.body;
+      
+      // Generate PDF
+      const canvas = await html2canvas(pdfContent);
+      const imgData = canvas.toDataURL('image/png');
+      
+      const pdf = new window.jspdf.jsPDF('landscape');
+      const imgProps = pdf.getImageProperties(imgData);
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+      pdf.addImage(imgData, 'PNG', 10, 10, pdfWidth - 20, pdfHeight - 20);
+      pdf.save(`transactions-${moment().format('YYYYMMDD-HHmmss')}.pdf`);
+      // Tutup window preview
+      printWindow.close();
+      
+      // Buka PDF di tab baru
+      const pdfBlob = pdf.output('blob');
+      const pdfUrl = URL.createObjectURL(pdfBlob);
+      window.open(pdfUrl, '_blank');
+      
+    }, 500);
+
   } catch (error) {
-    console.error('Error generating PDF:', error);
-  } finally {
-    document.body.removeChild(pdfContent);
+    console.error('PDF Error:', error);
   }
 };
 
@@ -680,6 +740,7 @@ async function connectSerial() {
             </v-sheet>
           </v-col>
         </v-row>
+
 
         <v-btn class="pa-2 ma-2 mb-0" color="#303F9F" @click="connectSerial">
           <v-icon left>mdi-connection</v-icon>

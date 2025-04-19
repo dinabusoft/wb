@@ -53,9 +53,12 @@ class TransactionController extends ApiController
                         return $query->orderBy($sortBy['key'], $sortBy['order']);
                     })->orderBy('date_in', 'desc')->orderBy('time_in', 'desc');
 
-            $data = $query->paginate($request->get('limit', 10));
+           if ($request->limit === 'all') {
+        return TransactionResource::collection($query->get());
+    }
 
-            return TransactionResource::collection($data)->response()->getData(true);
+    // Pagination normal
+    return TransactionResource::collection($query->paginate($request->get('limit', 10)));
         }
 
         return inertia('Transaction/Index');

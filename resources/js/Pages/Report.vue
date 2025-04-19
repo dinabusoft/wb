@@ -10,7 +10,7 @@ const formatDate = (value) => {
     ? moment(value, 'YYYY-MM-DD').format('DD/MM/YYYY') 
     : "-";
 };
-
+ 
 const formatTime = (value) => {
   return moment(value, 'HH:mm:ss').isValid() 
     ? moment(value, 'HH:mm:ss').format('HH:mm:ss') 
@@ -111,6 +111,7 @@ if (!selectedItem.value) return;
   printWindow.document.close();
   printWindow.print();
 };
+
 </script>
 
 <template>
@@ -226,12 +227,10 @@ if (!selectedItem.value) return;
                 <v-icon left>mdi-microsoft-excel</v-icon>
                 Export Excel
               </v-btn>
-
-              <v-btn color="#800000" variant="flat" class="mr-2" @click="printData">
+              <v-btn color="#800000" variant="flat" class="mr-2" @click="exportToPDF">
                 <v-icon left>mdi-file-pdf-box</v-icon>
                 Export PDF
               </v-btn>
-
               <v-btn 
                 color="indigo" 
                 variant="flat" 
@@ -239,7 +238,7 @@ if (!selectedItem.value) return;
                 @click="printBuktiTimbangan"
                 :disabled="!selectedItem?.date_out"
               >
-                <v-icon left>mdi-file-export</v-icon>
+                <v-icon left>mdi-file-export-outline</v-icon>
                 Print Bukti Timbang
               </v-btn>
 
@@ -369,42 +368,145 @@ export default {
         : "-";
     },
   async loadExternalLibs() {
-    return new Promise((resolve) => {
-      if (window.XLSX) {
-        resolve();
-        return;
-      }
+      return new Promise((resolve) => {
+    if (window.XLSX && window.jspdf && window.jspdf.AutoTable) {
+      resolve();
+      return;
+    }
 
+    const scriptsToLoad = [
+      'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js',
+      'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js',
+      'https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js'
+    ];
+
+    let loaded = 0;
+    scriptsToLoad.forEach(url => {
       const script = document.createElement('script');
-      script.src = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
-      script.onload = resolve;
+      script.src = url;
+      script.onload = () => {
+        loaded++;
+        if (loaded === scriptsToLoad.length) resolve();
+      };
       document.head.appendChild(script);
     });
+  });
   },
+  async exportToPDF() {
+      try {
+        await this.loadExternalLibs();
+        
+        // Ambil data
+        const params = {
+          filter: {
+            ...this.filters,
+            status: this.filters.status === 'All Status' ? null : this.filters.status
+          },
+          limit: 'all'
+        };
+
+        const response = await this.$axios.get('/transactions', { params });
+        const data = response.data.data;
+
+        // Format data untuk PDF
+        const headers = this.headers.map(h => h.title);
+        const body = data.map(item => 
+          this.headers.map(header => {
+            const value = item[header.key];
+            if (['date_in', 'date_out'].includes(header.key)) {
+              return this.formatDate(value);
+            }
+            if (['time_in', 'time_out'].includes(header.key)) {
+              return this.formatTime(value);
+            }
+            return value || '-';
+          })
+        );
+
+        // Buat PDF
+        const doc = new jspdf.jsPDF({
+          orientation: 'landscape',
+          unit: 'mm',
+          format: 'a4'
+        });
+        
+        doc.autoTable({
+          head: [headers],
+          body: body,
+          styles: { fontSize: 9 },
+          headStyles: { 
+            fillColor: [48, 63, 159],
+            textColor: 255,
+            fontStyle: 'bold'
+          },
+          margin: { top: 20 }
+        });
+
+        doc.save(`report-${moment().format('YYYYMMDD-HHmmss')}.pdf`);
+
+      } catch (error) {
+        console.error('PDF Error:', error);
+        this.notif = {
+          show: true,
+          color: 'error',
+          message: 'Gagal export PDF: ' + error.message
+        };
+      } finally {
+        this.isLoadingTable = false;
+      }
+},
 
   async exportToExcel() {
+    try {
+    this.isLoadingTable = true;
+    
+    // 1. Load library XLSX
     await this.loadExternalLibs();
     
-    // Membuat worksheet dari data tabel
+    // 2. Ambil semua data dengan filter yang sama
+    const params = {
+      filter: {
+        ...this.filters,
+        status: this.filters.status === 'All Status' ? null : this.filters.status
+      },
+      limit: 'all'
+    };
+
+    const response = await this.$axios.get('/transactions', { params });
+    
+    // 3. Format data untuk Excel
     const wsData = [
-      this.headers.map(h => h.title), // Header
-      ...this.items.map(item =>
+      this.headers.map(h => h.title),
+      ...response.data.data.map(item => 
         this.headers.map(header => {
           const value = item[header.key];
-          // Handle nested objects atau array
-          return typeof value === 'object' ? JSON.stringify(value) : value;
+          if (['date_in', 'date_out'].includes(header.key)) {
+            return this.formatDate(value);
+          }
+          if (['time_in', 'time_out'].includes(header.key)) {
+            return this.formatTime(value);
+          }
+          return value;
         })
       )
     ];
 
+    // 4. Generate Excel
     const ws = XLSX.utils.aoa_to_sheet(wsData);
-
-    // Membuat workbook
     const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Transactions");
+    XLSX.utils.book_append_sheet(wb, ws, "Laporan");
+    XLSX.writeFile(wb, `full-export-${moment().format('YYYYMMDD-HHmmss')}.xlsx`);
 
-    // Export ke file XLSX
-    XLSX.writeFile(wb, `transactions-report-${moment().format('YYYYMMDD-HHmmss')}.xlsx`);
+  } catch (error) {
+    console.error('Export error:', error);
+    this.notif = {
+      show: true,
+      color: 'error',
+      message: 'Gagal export data: ' + error.message
+    };
+  } finally {
+    this.isLoadingTable = false;
+  }
   },
 
   printData() {
@@ -522,6 +624,8 @@ export default {
         police_no: '',
         status: ''
       }
+       this.queryMaterialSelections();
+        this.queryCustomerSelections();
     },
     applyFilters() {
       // Filter implementation
